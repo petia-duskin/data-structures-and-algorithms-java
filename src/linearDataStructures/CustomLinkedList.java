@@ -1,5 +1,7 @@
 package linearDataStructures;
 
+import java.util.NoSuchElementException;
+
 public class CustomLinkedList {
     private class Node {
         private Node next = null;
@@ -40,7 +42,12 @@ public class CustomLinkedList {
 
     public void removeFirst() {
         if (isEmpty()) {
-            throw new IllegalStateException();
+            throw new NoSuchElementException();
+        }
+
+        if (isOneElement()) {
+            reset();
+            return;
         }
 
         Node next = first.next;
@@ -48,9 +55,22 @@ public class CustomLinkedList {
         first = next;
     }
 
+    private boolean isOneElement() {
+        return first == last;
+    }
+
+    private void reset() {
+        first = last = null;
+    }
+
     public void removeLast() {
         if (isEmpty()) {
             throw new IllegalStateException();
+        }
+
+        if (isOneElement()) {
+            reset();
+            return;
         }
 
         Node prev = null;
