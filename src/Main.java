@@ -4,16 +4,30 @@ import linearDataStructures.DynamicArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
-        CustomLinkedList list = new CustomLinkedList();
+        String str = "Hello world";
 
-        list.addLast(10);
-        list.addLast(20);
-        list.addLast(30);
-        System.out.println(Arrays.toString(list.toArray()));
+        System.out.println(reverseString(str));
+    }
 
-        System.out.println(list.getKthFromTheEnd(3));
+    public static String reverseString(String str) {
+        if (str == null || str.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        Stack<Character> chars = new Stack<>();
+        StringBuilder builder = new StringBuilder();
+
+        for (char ch : str.toCharArray()) {
+            chars.push(ch);
+        }
+
+        while (!chars.empty()) {
+            builder.append(chars.pop());
+        }
+
+        return builder.toString();
     }
 }
