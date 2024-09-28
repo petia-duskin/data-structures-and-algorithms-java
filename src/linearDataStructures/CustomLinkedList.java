@@ -158,4 +158,55 @@ public class CustomLinkedList {
         return array;
     }
 
+    public void reverse() {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+        if (isOneElement()) {
+            return;
+        }
+
+        Node prev = first;
+        Node current = first.next;
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+
+            prev = current;
+            current = next;
+        }
+
+        last = first;
+        last.next = null;
+        first = prev;
+    }
+
+    public int getKthFromTheEnd(int k) {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        if (k > size) {
+            throw new IllegalArgumentException();
+        }
+
+        Node current = first;
+        for (int i = 0; i <= k - 1; i++) {
+            current = current.next;
+        }
+
+        Node prev = first;
+
+        while (current != null) {
+            if (current.next == null) {
+                break;
+            }
+
+            current = current.next;
+            prev = prev.next;
+        }
+
+        return prev.value;
+    }
+
 }
