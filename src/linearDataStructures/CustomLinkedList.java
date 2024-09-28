@@ -81,7 +81,7 @@ public class CustomLinkedList {
             prev.next = null;
             last = prev;
         }
-        
+
         size--;
     }
 
@@ -142,6 +142,20 @@ public class CustomLinkedList {
 
     private boolean isEmpty() {
         return first == null;
+    }
+
+    public int[] toArray() {
+        int[] array = new int[size];
+
+        Node current = first;
+        int index = 0;
+
+        while (current != null) {
+            array[index++] = current.value;
+            current = current.next;
+        }
+
+        return array;
     }
 
 }

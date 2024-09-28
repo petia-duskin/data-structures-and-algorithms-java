@@ -25,5 +25,7 @@ public class Main {
         System.out.println(list.indexOf(15));
 
         System.out.println(list.size());
+
+        System.out.println(Arrays.toString(list.toArray()));
     }
 }
