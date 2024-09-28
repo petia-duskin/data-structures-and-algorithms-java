@@ -23,5 +23,7 @@ public class Main {
         System.out.println(list.indexOf(10));
         System.out.println(list.contains(15));
         System.out.println(list.indexOf(15));
+
+        System.out.println(list.size());
     }
 }

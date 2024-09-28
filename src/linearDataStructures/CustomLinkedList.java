@@ -19,6 +19,7 @@ public class CustomLinkedList {
 
     private Node first = null;
     private Node last = null;
+    private int size;
 
     public void addFirst(int value) {
         if (isEmpty()) {
@@ -28,6 +29,7 @@ public class CustomLinkedList {
             newNode.next = first;
             first = newNode;
         }
+        size++;
     }
 
     public void addLast(int value) {
@@ -38,6 +40,7 @@ public class CustomLinkedList {
             last.next = newNode;
             last = newNode;
         }
+        size++;
     }
 
     public void removeFirst() {
@@ -53,6 +56,8 @@ public class CustomLinkedList {
         Node next = first.next;
         first.next = null;
         first = next;
+
+        size--;
     }
 
     private boolean isOneElement() {
@@ -74,8 +79,11 @@ public class CustomLinkedList {
         }
 
         Node prev = getPrevious();
+        assert prev != null;
         prev.next = null;
         last = prev;
+
+        size--;
     }
 
     private Node getPrevious() {
@@ -122,6 +130,10 @@ public class CustomLinkedList {
         }
 
         return -1;
+    }
+
+    public int size() {
+        return size;
     }
 
     private void initialize(int value) {
