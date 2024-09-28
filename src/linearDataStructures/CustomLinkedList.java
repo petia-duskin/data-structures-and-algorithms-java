@@ -79,17 +79,15 @@ public class CustomLinkedList {
     }
 
     private Node getPrevious() {
-        Node prev = null;
         Node current = first;
-        while (current.next != null) {
-            if (current == last) {
-                break;
+        while (current != null) {
+            if (current.next == last) {
+                return current;
             }
-            prev = current;
             current = current.next;
         }
 
-        return prev;
+        return null;
     }
 
     public boolean contains(int value) {
