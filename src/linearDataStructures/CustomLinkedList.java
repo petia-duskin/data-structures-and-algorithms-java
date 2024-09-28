@@ -73,18 +73,21 @@ public class CustomLinkedList {
             return;
         }
 
-        Node prev = null;
+        Node prev = getPrevious();
+        prev.next = null;
+        last = prev;
+    }
+
+    private Node getPrevious() {
         Node current = first;
-        while (current.next != null) {
-            if (current == last) {
-                break;
+        while (current != null) {
+            if (current.next == last) {
+                return current;
             }
-            prev = current;
             current = current.next;
         }
 
-        prev.next = null;
-        last = prev;
+        return null;
     }
 
     public boolean contains(int value) {
