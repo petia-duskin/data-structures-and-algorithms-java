@@ -50,12 +50,12 @@ public class CustomLinkedList {
 
         if (isOneElement()) {
             reset();
-            return;
+        } else {
+            Node next = first.next;
+            first.next = null;
+            first = next;
         }
 
-        Node next = first.next;
-        first.next = null;
-        first = next;
 
         size--;
     }
@@ -75,14 +75,13 @@ public class CustomLinkedList {
 
         if (isOneElement()) {
             reset();
-            return;
+        } else {
+            Node prev = getPrevious();
+            assert prev != null;
+            prev.next = null;
+            last = prev;
         }
-
-        Node prev = getPrevious();
-        assert prev != null;
-        prev.next = null;
-        last = prev;
-
+        
         size--;
     }
 
