@@ -1,16 +1,21 @@
-import linearDataStructures.CustomLinkedList;
-import linearDataStructures.DynamicArray;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        String str = "Hello world";
+        linearDataStructures.Stack stack = new linearDataStructures.Stack();
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        System.out.println(stack.pop());
+        System.out.println(stack.pop());
+        stack.push(55);
+        System.out.println(stack.peek());
+        System.out.println(stack.isEmpty());
+        stack.pop();
+        stack.pop();
+        System.out.println(stack.isEmpty());
 
-        System.out.println(reverseString(str));
+        System.out.println(stack);
     }
 
     public static String reverseString(String str) {
@@ -29,5 +34,28 @@ public class Main {
         }
 
         return builder.toString();
+    }
+
+    public static boolean isBalanced(String str) {
+        List<Character> openBrackets = Arrays.asList('(', '{', '[', '<');
+        List<Character> closeBrackets = Arrays.asList(')', '}', ']', '>');
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : str.toCharArray()) {
+            if (openBrackets.contains(ch)) {
+                stack.push(ch);
+            } else if (closeBrackets.contains(ch)) {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+
+                char topBracket = stack.pop();
+                if (openBrackets.indexOf(topBracket) != closeBrackets.indexOf(ch)) {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
     }
 }
