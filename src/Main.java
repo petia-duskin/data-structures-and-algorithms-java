@@ -2,9 +2,20 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        String testString = "({How {are <you>?}})";
+        linearDataStructures.Stack stack = new linearDataStructures.Stack();
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        System.out.println(stack.pop());
+        System.out.println(stack.pop());
+        stack.push(55);
+        System.out.println(stack.peek());
+        System.out.println(stack.isEmpty());
+        stack.pop();
+        stack.pop();
+        System.out.println(stack.isEmpty());
 
-        System.out.println(isBalanced(testString));
+        System.out.println(stack);
     }
 
     public static String reverseString(String str) {
