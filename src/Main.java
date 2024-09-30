@@ -26,8 +26,8 @@ public class Main {
     }
 
     public static boolean isBalanced(String str) {
-        ArrayList<Character> openBrackets = new ArrayList<>(Arrays.asList('(', '{', '['));
-        ArrayList<Character> closeBrackets = new ArrayList<>(Arrays.asList(')', '}', ']'));
+        List<Character> openBrackets = Arrays.asList('(', '{', '[', '<');
+        List<Character> closeBrackets = Arrays.asList(')', '}', ']', '>');
         Stack<Character> stack = new Stack<>();
 
         for (char ch : str.toCharArray()) {
@@ -37,7 +37,11 @@ public class Main {
                 if (stack.isEmpty()) {
                     return false;
                 }
-                stack.pop();
+
+                char topBracket = stack.pop();
+                if (openBrackets.indexOf(topBracket) != closeBrackets.indexOf(ch)) {
+                    return false;
+                }
             }
         }
 
