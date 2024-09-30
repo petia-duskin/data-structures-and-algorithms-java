@@ -1,16 +1,10 @@
-import linearDataStructures.CustomLinkedList;
-import linearDataStructures.DynamicArray;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        String str = "Hello world";
+        String testString = "({How {are <you>?}})";
 
-        System.out.println(reverseString(str));
+        System.out.println(isBalanced(testString));
     }
 
     public static String reverseString(String str) {
@@ -29,5 +23,24 @@ public class Main {
         }
 
         return builder.toString();
+    }
+
+    public static boolean isBalanced(String str) {
+        ArrayList<Character> openBrackets = new ArrayList<>(Arrays.asList('(', '{', '['));
+        ArrayList<Character> closeBrackets = new ArrayList<>(Arrays.asList(')', '}', ']'));
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : str.toCharArray()) {
+            if (openBrackets.contains(ch)) {
+                stack.push(ch);
+            } else if (closeBrackets.contains(ch)) {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                stack.pop();
+            }
+        }
+
+        return stack.isEmpty();
     }
 }
