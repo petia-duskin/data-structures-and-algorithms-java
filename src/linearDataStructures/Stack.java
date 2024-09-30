@@ -21,6 +21,9 @@ public class Stack {
     }
 
     public int peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
         return values[index - 1];
     }
 
@@ -30,6 +33,6 @@ public class Stack {
 
     @Override
     public String toString() {
-        return Arrays.toString(values);
+        return Arrays.toString(Arrays.copyOfRange(values, 0, index));
     }
 }
