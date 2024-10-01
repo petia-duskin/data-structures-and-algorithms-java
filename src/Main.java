@@ -2,20 +2,24 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        linearDataStructures.Stack stack = new linearDataStructures.Stack();
-        stack.push(10);
-        stack.push(20);
-        stack.push(30);
-        System.out.println(stack.pop());
-        System.out.println(stack.pop());
-        stack.push(55);
-        System.out.println(stack.peek());
-        System.out.println(stack.isEmpty());
-        stack.pop();
-        stack.pop();
-        System.out.println(stack.isEmpty());
+        linearDataStructures.Queue queue = new linearDataStructures.Queue();
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+        queue.enqueue(4);
 
-        System.out.println(stack);
+        queue.dequeue();
+        queue.dequeue();
+
+        queue.enqueue(5);
+        queue.enqueue(6);
+
+        queue.dequeue();
+
+
+        System.out.println(queue);
+        System.out.println(queue.peek());
+        System.out.println(queue.size());
     }
 
     public static String reverseString(String str) {
