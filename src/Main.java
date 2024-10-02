@@ -2,24 +2,16 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        linearDataStructures.Queue queue = new linearDataStructures.Queue();
-        queue.enqueue(1);
-        queue.enqueue(2);
-        queue.enqueue(3);
-        queue.enqueue(4);
-
-        queue.dequeue();
-        queue.dequeue();
-
-        queue.enqueue(5);
-        queue.enqueue(6);
-
-        queue.dequeue();
-
-
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(10);
+        queue.add(20);
+        queue.add(30);
+        queue.add(40);
         System.out.println(queue);
         System.out.println(queue.peek());
-        System.out.println(queue.size());
+        reverse(queue);
+        System.out.println(queue);
+        System.out.println(queue.peek());
     }
 
     public static String reverseString(String str) {
@@ -61,5 +53,17 @@ public class Main {
         }
 
         return stack.isEmpty();
+    }
+
+    public static void reverse(Queue<Integer> queue) {
+        Stack<Integer> stack = new Stack<>();
+        while (!queue.isEmpty()) {
+            stack.push(queue.remove());
+        }
+        while (!stack.isEmpty()) {
+            queue.add(stack.pop());
+        }
+
+        System.out.println(queue);
     }
 }
