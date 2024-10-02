@@ -1,17 +1,24 @@
+import linearDataStructures.QueueWithStack;
+
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Queue<Integer> queue = new ArrayDeque<>();
-        queue.add(10);
-        queue.add(20);
-        queue.add(30);
-        queue.add(40);
-        System.out.println(queue);
-        System.out.println(queue.peek());
-        reverse(queue);
-        System.out.println(queue);
-        System.out.println(queue.peek());
+        QueueWithStack q = new QueueWithStack();
+        q.enqueue(10);
+        q.enqueue(20);
+        q.enqueue(30);
+
+        System.out.println(q.dequeue());
+        System.out.println(q.dequeue());
+
+        q.enqueue(40);
+        q.enqueue(50);
+
+        System.out.println(q.dequeue());
+        System.out.println(q.dequeue());
+        System.out.println(q.peek());
+        System.out.println(q.dequeue());
     }
 
     public static String reverseString(String str) {
