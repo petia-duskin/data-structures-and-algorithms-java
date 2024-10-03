@@ -1,24 +1,16 @@
+import linearDataStructures.PriorityQueueWithArray;
 import linearDataStructures.QueueWithStack;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        QueueWithStack q = new QueueWithStack();
-        q.enqueue(10);
-        q.enqueue(20);
-        q.enqueue(30);
+        PriorityQueueWithArray priorityQueueWithArray = new PriorityQueueWithArray();
+        priorityQueueWithArray.insert(5);
+        priorityQueueWithArray.insert(7);
+        priorityQueueWithArray.insert(4);
+        System.out.println(priorityQueueWithArray);
 
-        System.out.println(q.dequeue());
-        System.out.println(q.dequeue());
-
-        q.enqueue(40);
-        q.enqueue(50);
-
-        System.out.println(q.dequeue());
-        System.out.println(q.dequeue());
-        System.out.println(q.peek());
-        System.out.println(q.dequeue());
     }
 
     public static String reverseString(String str) {
