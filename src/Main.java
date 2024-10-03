@@ -6,8 +6,14 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        HashTable.firstNonRepeatedCharacter("HHello world");
-
+        HashTable hashTable = new HashTable();
+        hashTable.put(15, "cat");
+        hashTable.put(11, "dog");
+        hashTable.put(12, "pillow");
+        hashTable.put(33, "flower");
+        hashTable.remove(12);
+        hashTable.put(33, "table");
+        System.out.println(hashTable.get(33));
     }
 
     public static String reverseString(String str) {
