@@ -1,3 +1,4 @@
+import linearDataStructures.HashTable;
 import linearDataStructures.PriorityQueueWithArray;
 import linearDataStructures.QueueWithStack;
 
@@ -5,11 +6,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        PriorityQueueWithArray priorityQueueWithArray = new PriorityQueueWithArray();
-        priorityQueueWithArray.insert(5);
-        priorityQueueWithArray.insert(7);
-        priorityQueueWithArray.insert(4);
-        System.out.println(priorityQueueWithArray);
+        HashTable.firstNonRepeatedCharacter("HHello world");
 
     }
 
