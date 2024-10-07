@@ -13,8 +13,10 @@ public class Main {
         bt.insert(6);
         bt.insert(8);
         bt.insert(11);
+        bt.insert(7);
 
         System.out.println(bt.find(11));
+        bt.traversePostOrder();
     }
 
     public static String reverseString(String str) {

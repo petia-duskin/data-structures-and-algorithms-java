@@ -65,6 +65,57 @@ public class BinaryTree {
         return false;
     }
 
+    public void traversePreOrder() {
+        if (isEmpty()) {
+            return;
+        }
+        traversePreOrder(root);
+    }
+
+    private void traversePreOrder(Node current) {
+        if (current == null) {
+            return;
+        }
+        System.out.println(current.value);
+        traversePreOrder(current.leftChild);
+        traversePreOrder(current.rightChild);
+    }
+
+    public void traverseInOrder() {
+        if (isEmpty()) {
+            return;
+        }
+        traverseInOrder(root);
+    }
+
+    private void traverseInOrder(Node current) {
+        if (current == null) {
+            return;
+        }
+
+        traverseInOrder(current.leftChild);
+        System.out.println(current.value);
+        traverseInOrder(current.rightChild);
+    }
+
+    public void traversePostOrder() {
+        if (isEmpty()) {
+            return;
+        }
+
+        traversePostOrder(root);
+    }
+
+    private void traversePostOrder(Node current) {
+        if (current == null) {
+            return;
+        }
+
+        traversePostOrder(current.leftChild);
+        traversePostOrder(current.rightChild);
+        System.out.println(current.value);
+    }
+
     private boolean isEmpty() {
         return root == null;
     }
