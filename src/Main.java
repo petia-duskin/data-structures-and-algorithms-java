@@ -1,19 +1,20 @@
-import linearDataStructures.HashTable;
-import linearDataStructures.PriorityQueueWithArray;
-import linearDataStructures.QueueWithStack;
+import treeDataStructures.BinaryTree;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        HashTable hashTable = new HashTable();
-        hashTable.put(15, "cat");
-        hashTable.put(11, "dog");
-        hashTable.put(12, "pillow");
-        hashTable.put(33, "flower");
-        hashTable.remove(12);
-        hashTable.put(33, "table");
-        System.out.println(hashTable.get(33));
+        BinaryTree bt = new BinaryTree();
+        bt.insert(5);
+        bt.insert(1);
+        bt.insert(4);
+        bt.insert(3);
+        bt.insert(10);
+        bt.insert(6);
+        bt.insert(8);
+        bt.insert(11);
+
+        System.out.println(bt.find(11));
     }
 
     public static String reverseString(String str) {
