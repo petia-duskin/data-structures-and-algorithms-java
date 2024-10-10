@@ -129,11 +129,31 @@ public class BinaryTree {
         if (node == null) {
             return -1;
         }
-        if (node.leftChild == null && node.rightChild == null) {
+        if (isLeaf(node)) {
             return 0;
         }
 
         return 1 + Math.max(height(node.leftChild), height(node.rightChild));
+    }
+
+    private boolean isLeaf(Node node) {
+        return node.leftChild == null && node.rightChild == null;
+    }
+
+    public int minValue() {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        return minValue(root).value;
+    }
+
+    private Node minValue(Node node) {
+        if (node.leftChild == null) {
+            return node;
+        }
+
+        return minValue(node.leftChild);
     }
 
     private boolean isEmpty() {

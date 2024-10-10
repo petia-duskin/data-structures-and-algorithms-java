@@ -16,6 +16,7 @@ public class Main {
         bt.insert(7);
 
         System.out.println(bt.height());
+        System.out.println(bt.minValue());
 
     }
 
