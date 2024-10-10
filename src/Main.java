@@ -15,8 +15,18 @@ public class Main {
         bt.insert(11);
         bt.insert(7);
 
-        System.out.println(bt.height());
-        System.out.println(bt.minValue());
+        BinaryTree bt2 = new BinaryTree();
+        bt2.insert(1);
+        bt2.insert(4);
+        bt2.insert(5);
+        bt2.insert(3);
+        bt2.insert(10);
+        bt2.insert(6);
+        bt2.insert(8);
+        bt2.insert(11);
+        bt2.insert(7);
+
+        System.out.println(bt.equals(bt2.root));
 
     }
 

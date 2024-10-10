@@ -18,7 +18,7 @@ public class BinaryTree {
         }
     }
 
-    private Node root;
+    public Node root;
     private int size = 0;
 
     public void insert(int value) {
@@ -154,6 +154,28 @@ public class BinaryTree {
         }
 
         return minValue(node.leftChild);
+    }
+
+    public boolean equals(Node root2) {
+        if (isEmpty() && root2 == null) {
+            return true;
+        }
+
+        return equals(root, root2);
+    }
+
+    private boolean equals(Node node1, Node node2) {
+        if (node1 == null && node2 == null) {
+            return true;
+        }
+
+        if (node1 != null && node2 != null) {
+            return node1.value == node2.value
+                    && equals(node1.leftChild, node2.leftChild)
+                    && equals(node1.rightChild, node2.rightChild);
+        }
+
+        return false;
     }
 
     private boolean isEmpty() {
