@@ -236,6 +236,13 @@ public class BinaryTree {
         getNodesAtDistance(node.rightChild, nodes, distance - 1);
     }
 
+    public void leverOrderTraversal() {
+        if (isEmpty()) return;
+        for (int i = 0; i <= height(); i++) {
+            System.out.println(getNodesAtDistance(i));
+        }
+    }
+
     private boolean isEmpty() {
         return root == null;
     }

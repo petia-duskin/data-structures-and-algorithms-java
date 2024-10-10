@@ -15,7 +15,8 @@ public class Main {
         bt.insert(11);
         bt.insert(7);
 
-        System.out.println(bt.getNodesAtDistance(4));
+        System.out.println(bt.height());
+        bt.leverOrderTraversal();
 
     }
 
