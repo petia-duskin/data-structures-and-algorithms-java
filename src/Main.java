@@ -15,8 +15,8 @@ public class Main {
         bt.insert(11);
         bt.insert(7);
 
-        System.out.println(bt.find(11));
-        bt.traversePostOrder();
+        System.out.println(bt.height());
+
     }
 
     public static String reverseString(String str) {
