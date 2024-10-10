@@ -1,5 +1,7 @@
 package treeDataStructures;
 
+import java.util.ArrayList;
+
 public class BinaryTree {
     private class Node {
         private Node leftChild;
@@ -197,6 +199,41 @@ public class BinaryTree {
         }
 
         return false;
+    }
+
+    // method for checking isBinarySearchTree method works well
+    public void swapRoot() {
+        Node rootLeft = root.leftChild;
+        root.leftChild = root.rightChild;
+        root.rightChild = rootLeft;
+    }
+
+    public ArrayList<Node> getNodesAtDistance(int distance) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        if (isEmpty()) {
+            return nodes;
+        }
+        if (distance > height()) {
+            throw new IllegalArgumentException();
+        }
+
+        getNodesAtDistance(root, nodes, distance);
+
+        return nodes;
+    }
+
+    private void getNodesAtDistance(Node node, ArrayList<Node> nodes, int distance) {
+        if (node == null) {
+            return;
+        }
+
+        if (distance == 0) {
+            nodes.add(node);
+            return;
+        }
+
+        getNodesAtDistance(node.leftChild, nodes, distance - 1);
+        getNodesAtDistance(node.rightChild, nodes, distance - 1);
     }
 
     private boolean isEmpty() {

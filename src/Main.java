@@ -15,7 +15,8 @@ public class Main {
         bt.insert(11);
         bt.insert(7);
 
-        System.out.println(bt.isBinarySearchTree());
+        System.out.println(bt.getNodesAtDistance(4));
+
     }
 
     public static String reverseString(String str) {
