@@ -178,6 +178,27 @@ public class BinaryTree {
         return false;
     }
 
+    public boolean isBinarySearchTree() {
+        if (isEmpty()) {
+            return true;
+        }
+
+        return isBinarySearchTree(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private boolean isBinarySearchTree(Node node, int minLimit, int maxLimit) {
+        if (node == null) {
+            return true;
+        }
+
+        if (node.value > minLimit && node.value < maxLimit) {
+            return isBinarySearchTree(node.leftChild, minLimit, node.value)
+                    && isBinarySearchTree(node.rightChild, node.value, maxLimit);
+        }
+
+        return false;
+    }
+
     private boolean isEmpty() {
         return root == null;
     }
