@@ -1,23 +1,23 @@
+import treeDataStructures.AVLTree;
 import treeDataStructures.BinaryTree;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        BinaryTree bt = new BinaryTree();
-        bt.insert(5);
-        bt.insert(1);
-        bt.insert(4);
-        bt.insert(3);
-        bt.insert(10);
-        bt.insert(6);
-        bt.insert(8);
-        bt.insert(11);
-        bt.insert(7);
-
-        System.out.println(bt.height());
-        bt.leverOrderTraversal();
-
+        AVLTree avlTree = new AVLTree();
+        avlTree.insert(5);
+        avlTree.insert(4);
+        avlTree.insert(10);
+        avlTree.insert(6);
+        avlTree.insert(11);
+        avlTree.insert(2);
+        avlTree.insert(1);
+        avlTree.insert(3);
+        avlTree.insert(0);
+        avlTree.insert(-1);
+        avlTree.insert(-2);
+        System.out.println("debug message");
     }
 
     public static String reverseString(String str) {
