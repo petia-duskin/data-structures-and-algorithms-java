@@ -1,15 +1,23 @@
 import treeDataStructures.AVLTree;
 import treeDataStructures.BinaryTree;
+import treeDataStructures.Heap;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        AVLTree avlTree = new AVLTree();
-        avlTree.insert(10);
-        avlTree.insert(5);
-        avlTree.insert(6);
-        System.out.println("debug message");
+        Heap heap = new Heap();
+        heap.insert(10);
+        heap.insert(7);
+        heap.insert(8);
+        heap.insert(6);
+        heap.insert(5);
+        heap.insert(4);
+        heap.insert(3);
+        heap.insert(15);
+        heap.remove();
+
+        System.out.println("Debug message");
     }
 
     public static String reverseString(String str) {
