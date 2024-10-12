@@ -5,8 +5,15 @@ public class Heap {
     private int size = 0;
 
     public void insert(int value) {
+        if (isFull()) {
+            throw new IllegalStateException();
+        }
         heap[size++] = value;
         bubbleUp();
+    }
+
+    public boolean isFull() {
+        return size == heap.length;
     }
 
     public int remove() {
@@ -26,7 +33,7 @@ public class Heap {
 
     private void bubbleDown() {
         int index = 0;
-        while (!isValidParent(index)) {
+        while (index <= size && !isValidParent(index)) {
             int newIndex = getGreaterChildIndex(index);
             swap(index, newIndex);
             index = newIndex;
@@ -38,7 +45,7 @@ public class Heap {
     }
 
     private int getGreaterChildIndex(int index) {
-        return getValue(index) < leftChild(index) ? leftChildIndex(index) : rightChildIndex(index);
+        return leftChild(index) > rightChild(index) ? leftChildIndex(index) : rightChildIndex(index);
     }
 
     public int max() {
@@ -88,10 +95,7 @@ public class Heap {
     }
 
     private int parentIndex(int index) {
-        if (index <= 0) {
-            return 0;
-        }
-        return index % 2 == 0 ? index / 2 - 1 : (index + 1) / 2 - 1;
+        return (index - 1) / 2;
     }
 
     private int leftChildIndex(int index) {
