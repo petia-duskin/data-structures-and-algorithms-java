@@ -31,26 +31,31 @@ public class AVLTree {
             return new Node(value);
         }
 
-
         if (value < node.value) {
             node.leftChild = insert(node.leftChild, value);
         } else if (value > node.value) {
             node.rightChild = insert(node.rightChild, value);
         }
 
+        node = balance(node);
+
+        node.height = height(node);
+
+        return node;
+    }
+
+    private Node balance(Node node) {
         if (isRightHeavy(node)) {
-            if (node.rightChild.leftChild != null) {
+            if (balanceFactor(node.rightChild) > 0) {
                 node.rightChild = rightRotate(node.rightChild);
             }
             return leftRotate(node);
         } else if (isLeftHeavy(node)) {
-            if (node.leftChild.rightChild != null) {
+            if (balanceFactor(node.leftChild) < 0) {
                 node.leftChild = leftRotate(node.leftChild);
             }
             return rightRotate(node);
         }
-
-        node.height = height(node);
 
         return node;
     }
@@ -58,17 +63,11 @@ public class AVLTree {
     private Node rightRotate(Node node) {
         Node newRoot = node.leftChild;
 
-        if (newRoot.rightChild != null) {
-            Node temp = newRoot.rightChild;
-            newRoot.rightChild = node;
-            node.leftChild = temp;
-        } else {
-            newRoot.rightChild = node;
-            node.leftChild = null;
-        }
+        node.leftChild = newRoot.rightChild;
+        newRoot.rightChild = node;
 
-        newRoot.height = height(newRoot);
-        node.height = height(node);
+        setHeight(newRoot);
+        setHeight(node);
 
         return newRoot;
     }
@@ -76,31 +75,33 @@ public class AVLTree {
     private Node leftRotate(Node node) {
         Node newRoot = node.rightChild;
 
-        if (newRoot.leftChild != null) {
-            Node temp = newRoot.leftChild;
-            newRoot.leftChild = node;
-            node.rightChild = temp;
-        } else {
-            newRoot.leftChild = node;
-            node.rightChild = null;
-        }
+        node.rightChild = newRoot.leftChild;
+        newRoot.leftChild = node;
 
-        newRoot.height = height(newRoot);
-        node.height = height(node);
+        setHeight(newRoot);
+        setHeight(node);
 
         return newRoot;
     }
 
+    private void setHeight(Node node) {
+        node.height = height(node);
+    }
+
     private boolean isLeftHeavy(Node node) {
-        return height(node.leftChild) - height(node.rightChild) > 1;
+        return balanceFactor(node) > 1;
     }
 
     private boolean isRightHeavy(Node node) {
-        return height(node.leftChild) - height(node.rightChild) < -1;
+        return balanceFactor(node) < -1;
     }
 
     private boolean isBalanced(Node node) {
         return Math.abs(height(node.leftChild) - height(node.rightChild)) <= 1;
+    }
+
+    private int balanceFactor(Node node) {
+        return (node == null) ? 0 : height(node.leftChild) - height(node.rightChild);
     }
 
     public int height() {
