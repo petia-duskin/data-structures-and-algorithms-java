@@ -23,26 +23,19 @@ public class AVLTree {
     private Node root;
 
     public void insert(int value) {
-        Node newNode = new Node(value);
-
-        if (isEmpty()) {
-            root = newNode;
-            return;
-        }
-
-        root = insert(root, newNode);
+        root = insert(root, value);
     }
 
-    private Node insert(Node node, Node newNode) {
+    private Node insert(Node node, int value) {
         if (node == null) {
-            return newNode;
+            return new Node(value);
         }
 
 
-        if (newNode.value < node.value) {
-            node.leftChild = insert(node.leftChild, newNode);
-        } else if (newNode.value > node.value) {
-            node.rightChild = insert(node.rightChild, newNode);
+        if (value < node.value) {
+            node.leftChild = insert(node.leftChild, value);
+        } else if (value > node.value) {
+            node.rightChild = insert(node.rightChild, value);
         }
 
         if (isRightHeavy(node)) {
@@ -89,7 +82,7 @@ public class AVLTree {
             node.rightChild = temp;
         } else {
             newRoot.leftChild = node;
-            node.leftChild = null;
+            node.rightChild = null;
         }
 
         newRoot.height = height(newRoot);
