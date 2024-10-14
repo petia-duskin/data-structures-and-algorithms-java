@@ -21,7 +21,6 @@ public class BinaryTree {
     }
 
     public Node root;
-    private int size = 0;
 
     public void insert(int value) {
         if (isEmpty()) {

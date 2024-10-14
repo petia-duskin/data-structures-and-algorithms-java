@@ -1,13 +1,12 @@
-import treeDataStructures.Heap;
+import treeDataStructures.Trie;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numbers = {5, 3, 8, 4, 1, 2};
-        Heap.heapify(numbers);
-        System.out.println(Heap.KthLargestItem(numbers, 3));
-        System.out.println(Arrays.toString(numbers));
+        Trie trie = new Trie();
+        trie.insert("hello");
+        System.out.println("Debug message");
     }
 
     public static String reverseString(String str) {
