@@ -1,33 +1,39 @@
 package treeDataStructures;
 
+import java.util.HashMap;
+
 public class Trie {
+    public static int ALPHABET_SIZE = 26;
+
     private class Node {
         private char value;
-        private Node[] children;
+        private HashMap<Character, Node> children = new HashMap();
         private boolean isEndOfWord = false;
 
         public Node(char value) {
             this.value = value;
-            children = new Node[26];
         }
 
-        public boolean hasChar(int index) {
-            return children[index] != null;
+        public boolean hasChild(char ch) {
+            return children.containsKey(ch);
         }
 
-        public Node getChildrenNode(int index) {
-            return children[index];
+        public Node getChild(char ch) {
+            return children.get(ch);
         }
 
-        public void setChildrenNode(Node node) {
-            children[getCharIndex(node.value)] = node;
+        public void addChild(char ch) {
+            children.put(ch, new Node(ch));
         }
 
         public void setIsEndOfWord(boolean isEndOfWord) {
             this.isEndOfWord = isEndOfWord;
         }
 
-
+        @Override
+        public String toString() {
+            return "value=" + value;
+        }
     }
 
     private Node root = new Node(' ');
@@ -35,20 +41,11 @@ public class Trie {
     public void insert(String word) {
         Node current = root;
         for (char ch : word.toCharArray()) {
-            int charIndex = getCharIndex(ch);
-            if (current.hasChar(charIndex)) {
-                current = current.getChildrenNode(charIndex);
-                continue;
+            if (!current.hasChild(ch)) {
+                current.addChild(ch);
             }
-            Node newNode = new Node(ch);
-            current.setChildrenNode(newNode);
-            current = newNode;
+            current = current.getChild(ch);
         }
         current.setIsEndOfWord(true);
     }
-
-    private int getCharIndex(char ch) {
-        return ch - 'a';
-    }
-
 }

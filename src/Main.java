@@ -5,7 +5,8 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Trie trie = new Trie();
-        trie.insert("hello");
+        trie.insert("cat");
+        trie.insert("can");
         System.out.println("Debug message");
     }
 
