@@ -41,11 +41,34 @@ public class Heap {
     }
 
     private boolean isValidParent(int index) {
-        return getValue(index) > leftChild(index) && getValue(index) > rightChild(index);
+        if (!hasLeftChild(index)) {
+            return true;
+        }
+
+        boolean isValid = getValue(index) > leftChild(index);
+
+        if (!hasRightChild(index)) {
+            isValid &= getValue(index) > rightChild(index);
+        }
+        return isValid;
     }
 
     private int getGreaterChildIndex(int index) {
+        if (!hasLeftChild(index)) {
+            return index;
+        }
+        if (!hasRightChild(index)) {
+            return leftChildIndex(index);
+        }
         return leftChild(index) > rightChild(index) ? leftChildIndex(index) : rightChildIndex(index);
+    }
+
+    private boolean hasLeftChild(int index) {
+        return leftChildIndex(index) <= size;
+    }
+
+    private boolean hasRightChild(int index) {
+        return rightChildIndex(index) <= size;
     }
 
     public int max() {
