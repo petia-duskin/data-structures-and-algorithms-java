@@ -4,16 +4,8 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Heap heap = new Heap();
-        heap.insert(10);
-        heap.insert(5);
-        heap.insert(17);
-        heap.insert(4);
-        heap.insert(22);
-
-        System.out.println(heap.remove());
-
-        System.out.println("Debug message");
+        int[] numbers = {5, 3, 10, 1, 4, 2};
+        System.out.println(Arrays.toString(heapSort(numbers)));
     }
 
     public static String reverseString(String str) {
@@ -32,6 +24,22 @@ public class Main {
         }
 
         return builder.toString();
+    }
+
+    public static int[] heapSort(int[] arr) {
+        Heap heap = new Heap();
+        for (int number : arr) {
+            heap.insert(number);
+        }
+
+        int[] newArr = new int[arr.length];
+
+        int index = 0;
+        while (!heap.isEmpty()) {
+            newArr[index++] = heap.remove();
+        }
+
+        return newArr;
     }
 
     public static boolean isBalanced(String str) {

@@ -129,7 +129,7 @@ public class Heap {
         return (index * 2) + 2;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 0;
     }
 }
