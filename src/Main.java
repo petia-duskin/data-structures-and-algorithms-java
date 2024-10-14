@@ -8,6 +8,22 @@ public class Main {
         System.out.println(Arrays.toString(heapSort(numbers)));
     }
 
+    public static int[] heapSort(int[] arr) {
+        Heap heap = new Heap();
+        for (int number : arr) {
+            heap.insert(number);
+        }
+
+        int[] newArr = new int[arr.length];
+
+        int index = 0;
+        while (!heap.isEmpty()) {
+            newArr[index++] = heap.remove();
+        }
+
+        return newArr;
+    }
+
     public static String reverseString(String str) {
         if (str == null || str.isEmpty()) {
             throw new IllegalArgumentException();
@@ -24,22 +40,6 @@ public class Main {
         }
 
         return builder.toString();
-    }
-
-    public static int[] heapSort(int[] arr) {
-        Heap heap = new Heap();
-        for (int number : arr) {
-            heap.insert(number);
-        }
-
-        int[] newArr = new int[arr.length];
-
-        int index = 0;
-        while (!heap.isEmpty()) {
-            newArr[index++] = heap.remove();
-        }
-
-        return newArr;
     }
 
     public static boolean isBalanced(String str) {
