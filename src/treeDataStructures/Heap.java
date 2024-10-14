@@ -47,7 +47,7 @@ public class Heap {
 
         boolean isValid = getValue(index) > leftChild(index);
 
-        if (!hasRightChild(index)) {
+        if (hasRightChild(index)) {
             isValid &= getValue(index) > rightChild(index);
         }
         return isValid;
@@ -131,5 +131,48 @@ public class Heap {
 
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    public static void swap(int[] arr, int index1, int index2) {
+        int temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+    }
+
+    public static void heapify(int[] arr) {
+        int lastParentIndex = arr.length / 2 - 1;
+        for (int i = 0; i < lastParentIndex; i++) {
+            int leftChildIndex = i * 2 + 1;
+            int rightChildIndex = i * 2 + 2;
+            boolean hasLeftChild = leftChildIndex < arr.length;
+            boolean hasRightChild = rightChildIndex < arr.length;
+            if (!hasLeftChild) {
+                break;
+            }
+            boolean isValid = arr[i] > arr[leftChildIndex];
+            if (hasRightChild) {
+                isValid &= arr[i] > arr[rightChildIndex];
+            }
+            if (!isValid) {
+                int biggerChildIndex = arr[leftChildIndex] > arr[rightChildIndex] ? leftChildIndex : rightChildIndex;
+                swap(arr, i, biggerChildIndex);
+            }
+        }
+    }
+
+    public static int[] heapSort(int[] arr) {
+        Heap heap = new Heap();
+        for (int number : arr) {
+            heap.insert(number);
+        }
+
+        int[] newArr = new int[arr.length];
+
+        int index = 0;
+        while (!heap.isEmpty()) {
+            newArr[index++] = heap.remove();
+        }
+
+        return newArr;
     }
 }

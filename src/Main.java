@@ -4,24 +4,9 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int[] numbers = {5, 3, 10, 1, 4, 2};
-        System.out.println(Arrays.toString(heapSort(numbers)));
-    }
-
-    public static int[] heapSort(int[] arr) {
-        Heap heap = new Heap();
-        for (int number : arr) {
-            heap.insert(number);
-        }
-
-        int[] newArr = new int[arr.length];
-
-        int index = 0;
-        while (!heap.isEmpty()) {
-            newArr[index++] = heap.remove();
-        }
-
-        return newArr;
+        int[] numbers = {5, 3, 8, 4, 1, 2};
+        Heap.heapify(numbers);
+        System.out.println(Arrays.toString(numbers));
     }
 
     public static String reverseString(String str) {
