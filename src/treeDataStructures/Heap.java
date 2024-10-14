@@ -175,4 +175,22 @@ public class Heap {
 
         return newArr;
     }
+
+    public static int KthLargestItem(int[] arr, int distance) {
+        if (distance < 0 || distance > arr.length) {
+            throw new IllegalArgumentException();
+        }
+
+        Heap heap = new Heap();
+
+        for (int number : arr) {
+            heap.insert(number);
+        }
+
+        for (int i = 0; i < distance - 1; i++) {
+            heap.remove();
+        }
+
+        return heap.remove();
+    }
 }
