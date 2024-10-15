@@ -5,11 +5,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Trie trie = new Trie();
-        trie.insert("cat");
-        trie.insert("can");
-        trie.insert("caffee");
+        trie.insert("car");
+        trie.insert("care");
+        trie.remove("care");
 
-        trie.postOrderTraverse();
+        System.out.println("debug message");
     }
 
     public static String reverseString(String str) {

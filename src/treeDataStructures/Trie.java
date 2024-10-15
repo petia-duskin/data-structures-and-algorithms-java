@@ -34,6 +34,14 @@ public class Trie {
             return children.values().toArray(new Node[0]);
         }
 
+        public boolean hasChildren() {
+            return !children.isEmpty();
+        }
+
+        public void removeChild(char ch) {
+            children.remove(ch);
+        }
+
         @Override
         public String toString() {
             return "value=" + value;
@@ -92,5 +100,28 @@ public class Trie {
         }
 
         System.out.println(node.value);
+    }
+
+    public void remove(String word) {
+        if (word == null || !contains(word)) {
+            throw new IllegalArgumentException();
+        }
+
+        remove(root, word, 0);
+    }
+
+    private void remove(Node node, String word, int index) {
+        if (index == word.length()) {
+            node.setIsEndOfWord(false);
+            return;
+        }
+
+        char ch = word.charAt(index);
+
+        remove(node.getChild(ch), word, index + 1);
+
+        if (!node.getChild(ch).hasChildren() && !node.getChild(ch).isEndOfWord) {
+            node.removeChild(ch);
+        }
     }
 }
