@@ -7,7 +7,10 @@ public class Main {
         Trie trie = new Trie();
         trie.insert("cat");
         trie.insert("can");
-        System.out.println("Debug message");
+        trie.insert("caffee");
+        System.out.println(trie.contains("can"));
+        System.out.println(trie.contains("caffe"));
+        System.out.println(trie.contains("beuaty"));
     }
 
     public static String reverseString(String str) {

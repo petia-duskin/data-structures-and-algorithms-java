@@ -48,4 +48,21 @@ public class Trie {
         }
         current.setIsEndOfWord(true);
     }
+
+    public boolean contains(String word) {
+        if (word == null) {
+            return false;
+        }
+
+        Node current = root;
+
+        for (char ch : word.toCharArray()) {
+            if (!current.hasChild(ch)) {
+                return false;
+            }
+            current = current.getChild(ch);
+        }
+
+        return current.isEndOfWord;
+    }
 }
