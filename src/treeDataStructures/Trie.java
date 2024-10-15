@@ -1,6 +1,8 @@
 package treeDataStructures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Trie {
     public static int ALPHABET_SIZE = 26;
@@ -103,7 +105,7 @@ public class Trie {
     }
 
     public void remove(String word) {
-        if (word == null || !contains(word)) {
+        if (!contains(word)) {
             throw new IllegalArgumentException();
         }
 
@@ -122,6 +124,50 @@ public class Trie {
 
         if (!node.getChild(ch).hasChildren() && !node.getChild(ch).isEndOfWord) {
             node.removeChild(ch);
+        }
+    }
+
+    public List<String> autoComplete(String prefix) {
+        if (prefix == null) {
+            throw new IllegalArgumentException();
+        }
+
+        ArrayList<String> words = new ArrayList<>();
+        Node lastNode = findLastNodeOf(prefix);
+
+        if (lastNode == null) {
+            return words;
+        }
+
+        autoComplete(lastNode, prefix, words);
+
+
+        return words;
+    }
+
+    private Node findLastNodeOf(String prefix) {
+        Node current = root;
+        for (char ch : prefix.toCharArray()) {
+            if (!current.hasChild(ch)) {
+                return null;
+            }
+            current = current.getChild(ch);
+        }
+
+        return current;
+    }
+
+    private void autoComplete(Node node, String prefix, ArrayList<String> words) {
+        if (node.isEndOfWord) {
+            words.add(prefix);
+        }
+
+        if (!node.hasChildren() && node.isEndOfWord) {
+            return;
+        }
+
+        for (Node child : node.getChildren()) {
+            autoComplete(child, prefix + child.value, words);
         }
     }
 }

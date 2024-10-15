@@ -6,10 +6,11 @@ public class Main {
     public static void main(String[] args) {
         Trie trie = new Trie();
         trie.insert("car");
-        trie.insert("care");
-        trie.remove("care");
+        trie.insert("card");
+        trie.insert("careful");
+        trie.insert("egg");
 
-        System.out.println("debug message");
+        System.out.println(trie.autoComplete("car"));
     }
 
     public static String reverseString(String str) {
