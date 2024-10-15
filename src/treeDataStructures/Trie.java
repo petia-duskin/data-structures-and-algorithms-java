@@ -30,6 +30,10 @@ public class Trie {
             this.isEndOfWord = isEndOfWord;
         }
 
+        public Node[] getChildren() {
+            return children.values().toArray(new Node[0]);
+        }
+
         @Override
         public String toString() {
             return "value=" + value;
@@ -64,5 +68,29 @@ public class Trie {
         }
 
         return current.isEndOfWord;
+    }
+
+    public void preOrderTraverse() {
+        preOrderTraverse(root);
+    }
+
+    private void preOrderTraverse(Node node) {
+        System.out.println(node.value);
+
+        for (Node child : node.getChildren()) {
+            preOrderTraverse(child);
+        }
+    }
+
+    public void postOrderTraverse() {
+        postOrderTraverse(root);
+    }
+
+    private void postOrderTraverse(Node node) {
+        for (Node child : node.getChildren()) {
+            postOrderTraverse(child);
+        }
+
+        System.out.println(node.value);
     }
 }

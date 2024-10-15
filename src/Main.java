@@ -8,9 +8,8 @@ public class Main {
         trie.insert("cat");
         trie.insert("can");
         trie.insert("caffee");
-        System.out.println(trie.contains("can"));
-        System.out.println(trie.contains("caffe"));
-        System.out.println(trie.contains("beuaty"));
+
+        trie.postOrderTraverse();
     }
 
     public static String reverseString(String str) {
