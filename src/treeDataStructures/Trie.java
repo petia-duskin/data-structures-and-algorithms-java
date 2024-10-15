@@ -162,10 +162,6 @@ public class Trie {
             words.add(prefix);
         }
 
-        if (!node.hasChildren() && node.isEndOfWord) {
-            return;
-        }
-
         for (Node child : node.getChildren()) {
             autoComplete(child, prefix + child.value, words);
         }
