@@ -1,17 +1,25 @@
+import graphDataStructures.GraphWithAdjacencyList;
 import treeDataStructures.Trie;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Trie trie = new Trie();
-        trie.insert("car");
-        trie.insert("care");
-        trie.insert("card");
-        trie.insert("careful");
-        trie.insert("egg");
+        GraphWithAdjacencyList graph = new GraphWithAdjacencyList();
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+        graph.addNode("D");
 
-        System.out.println(trie.autoComplete("car"));
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "D");
+        graph.addEdge("A", "C");
+        graph.addEdge("C", "A");
+        graph.addEdge("C", "B");
+        graph.addEdge("D", "C");
+        graph.addEdge("D", "B");
+
+        graph.print();
     }
 
     public static String reverseString(String str) {
