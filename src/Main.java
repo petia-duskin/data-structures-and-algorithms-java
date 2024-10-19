@@ -12,14 +12,12 @@ public class Main {
         graph.addNode("D");
 
         graph.addEdge("A", "B");
-        graph.addEdge("A", "D");
-        graph.addEdge("A", "C");
-        graph.addEdge("C", "A");
-        graph.addEdge("C", "B");
+        graph.addEdge("B", "D");
         graph.addEdge("D", "C");
-        graph.addEdge("D", "B");
+        graph.addEdge("A", "C");
 
-        graph.print();
+
+        graph.breadthFirstTraversal("A");
     }
 
     public static String reverseString(String str) {
