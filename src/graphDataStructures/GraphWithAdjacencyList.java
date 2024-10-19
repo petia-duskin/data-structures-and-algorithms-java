@@ -108,6 +108,33 @@ public class GraphWithAdjacencyList {
         }
     }
 
+    public void topologicalSort(String label) {
+        Node root = nodes.get(label);
+        if (root == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Stack<Node> stack = new Stack<>();
+
+        topologicalSort(root, new HashSet<>(), stack);
+
+        while (!stack.isEmpty()) {
+            System.out.println(stack.pop().label);
+        }
+    }
+
+    private void topologicalSort(Node node, Set<Node> visitedNodes, Stack<Node> stack) {
+        visitedNodes.add(node);
+
+        for (Node neighbor : adjacencyList.get(node)) {
+            if (!visitedNodes.contains(neighbor)) {
+                topologicalSort(neighbor, visitedNodes, stack);
+            }
+        }
+
+        stack.push(node);
+    }
+
     public void print() {
         for (var entry : adjacencyList.entrySet()) {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
