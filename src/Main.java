@@ -6,18 +6,17 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         GraphWithAdjacencyList graph = new GraphWithAdjacencyList();
-        graph.addNode("X");
         graph.addNode("A");
         graph.addNode("B");
-        graph.addNode("P");
+        graph.addNode("C");
+        graph.addNode("D");
 
-        graph.addEdge("X", "A");
-        graph.addEdge("X", "B");
-        graph.addEdge("A", "P");
-        graph.addEdge("B", "P");
+        graph.addEdge("D", "A");
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "C");
+        graph.addEdge("B", "C");
 
-
-        graph.topologicalSort("X");
+        System.out.println(graph.hasCycle("A"));
     }
 
     public static String reverseString(String str) {

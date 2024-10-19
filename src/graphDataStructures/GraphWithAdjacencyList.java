@@ -135,6 +135,44 @@ public class GraphWithAdjacencyList {
         stack.push(node);
     }
 
+    public boolean hasCycle(String label) {
+        Node root = nodes.get(label);
+        if (root == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Set<Node> visitingNodes = new HashSet<>();
+        Set<Node> visitedNodes = new HashSet<>();
+
+        boolean result = hasCycle(root, visitingNodes, visitedNodes);
+
+        System.out.println(visitingNodes);
+        System.out.println(visitedNodes);
+
+        return result;
+    }
+
+    // visitingNodes []
+    // visitedNodes [C, B, A]
+    private boolean hasCycle(Node node, Set<Node> visitingNodes, Set<Node> visitedNodes) {
+        if (visitingNodes.contains(node)) {
+            return true;
+        }
+
+        visitingNodes.add(node);
+
+        for (Node neighbor : adjacencyList.get(node)) {
+            if (hasCycle(neighbor, visitingNodes, visitedNodes)) {
+                return true;
+            }
+        }
+
+        visitedNodes.add(node);
+        visitingNodes.remove(node);
+
+        return false;
+    }
+
     public void print() {
         for (var entry : adjacencyList.entrySet()) {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
