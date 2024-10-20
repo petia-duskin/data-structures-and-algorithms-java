@@ -1,22 +1,25 @@
-import graphDataStructures.GraphWithAdjacencyList;
-import treeDataStructures.Trie;
+import graphDataStructures.WeightedGraph;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        GraphWithAdjacencyList graph = new GraphWithAdjacencyList();
+        WeightedGraph graph = new WeightedGraph();
         graph.addNode("A");
         graph.addNode("B");
         graph.addNode("C");
         graph.addNode("D");
+        graph.addNode("E");
 
-        graph.addEdge("D", "A");
-        graph.addEdge("A", "B");
-        graph.addEdge("A", "C");
-        graph.addEdge("B", "C");
+        graph.addEdge("A", "B", 3);
+        graph.addEdge("A", "D", 2);
+        graph.addEdge("A", "C", 4);
+        graph.addEdge("B", "D", 6);
+        graph.addEdge("B", "E", 1);
+        graph.addEdge("D", "C", 1);
+        graph.addEdge("D", "E", 5);
 
-        System.out.println(graph.hasCycle("A"));
+        graph.dijkstrasShortestPath("C", "E");
     }
 
     public static String reverseString(String str) {
