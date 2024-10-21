@@ -19,7 +19,7 @@ public class Main {
         graph.addEdge("D", "C", 1);
         graph.addEdge("D", "E", 5);
 
-        graph.dijkstrasShortestPath("C", "E");
+        System.out.println(graph.getShortestPath("A", "E"));
     }
 
     public static String reverseString(String str) {

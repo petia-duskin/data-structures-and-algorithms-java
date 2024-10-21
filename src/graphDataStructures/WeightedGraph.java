@@ -113,6 +113,79 @@ public class WeightedGraph {
         }
     }
 
+    // Second implementation of dijkstraShortestPath algorithm
+
+    private class NodeEntry {
+        private Node node;
+        private int weight;
+
+        public NodeEntry(Node node, int weight) {
+            this.node = node;
+            this.weight = weight;
+        }
+    }
+
+    public Path getShortestPath(String from, String to) {
+        Node fromNode = nodes.get(from);
+        Node toNode = nodes.get(to);
+
+        if (fromNode == null || toNode == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Map<Node, Integer> distances = new HashMap<>();
+        for (Node node : nodes.values()) {
+            distances.put(node, Integer.MAX_VALUE);
+        }
+
+        distances.replace(fromNode, 0);
+
+        Map<Node, Node> previousNodes = new HashMap<>();
+
+        Set<Node> visited = new HashSet<>();
+
+        PriorityQueue<NodeEntry> queue = new PriorityQueue<>(Comparator.comparingInt(ne -> ne.weight));
+
+        queue.add(new NodeEntry(fromNode, 0));
+
+        while (!queue.isEmpty()) {
+            Node current = queue.remove().node;
+            visited.add(current);
+
+            for (Edge edge : current.getEdges()) {
+                if (visited.contains(edge.to)) {
+                    continue;
+                }
+
+                int newDistance = distances.get(current) + edge.weight;
+                if (newDistance < distances.get(edge.to)) {
+                    distances.replace(edge.to, newDistance);
+                    previousNodes.put(edge.to, current);
+                    queue.add(new NodeEntry(edge.to, newDistance));
+                }
+            }
+        }
+
+        return buildPath(previousNodes, toNode);
+    }
+
+    private Path buildPath(Map<Node, Node> previousNodes, Node toNode) {
+        Stack<Node> stack = new Stack<>();
+        stack.push(toNode);
+        Node previous = previousNodes.get(toNode);
+        while (previous != null) {
+            stack.push(previous);
+            previous = previousNodes.get(previous);
+        }
+
+        Path path = new Path();
+        while (!stack.isEmpty()) {
+            path.add(stack.pop().label);
+        }
+
+        return path;
+    }
+
     public void print() {
         for (Node node : nodes.values()) {
             System.out.println(node + " -> " + node.getEdges());
