@@ -60,6 +60,36 @@ public class WeightedGraph {
         toNode.addEdge(fromNode, weight);
     }
 
+    public boolean hasCycle(String from, String to) {
+        Node fromNode = nodes.get(from);
+        Node toNode = nodes.get(to);
+        if (fromNode == null || toNode == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Set<Node> visited = new HashSet<>();
+
+        return hasCycle(fromNode, null, visited);
+    }
+
+    private boolean hasCycle(Node current, Node prev, Set<Node> visited) {
+        if (visited.contains(current)) {
+            return true;
+        }
+
+        visited.add(current);
+
+        for (Edge edge : current.getEdges()) {
+            if (edge.to != prev) {
+                if (hasCycle(edge.to, edge.from, visited)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void dijkstrasShortestPath(String from, String to) {
         Node fromNode = nodes.get(from);
         Node toNode = nodes.get(to);
