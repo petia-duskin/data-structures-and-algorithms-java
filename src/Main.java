@@ -8,12 +8,15 @@ public class Main {
         graph.addNode("A");
         graph.addNode("B");
         graph.addNode("C");
+        graph.addNode("D");
 
-        graph.addEdge("A", "B", 1);
-        graph.addEdge("B", "C", 1);
+        graph.addEdge("A", "B", 3);
+        graph.addEdge("B", "D", 4);
+        graph.addEdge("C", "D", 4);
         graph.addEdge("A", "C", 1);
+        graph.addEdge("B", "C", 2);
 
-        System.out.println(graph.hasCycle("A", "C"));
+        graph.primsAlgorithm("A").print();
     }
 
     public static String reverseString(String str) {

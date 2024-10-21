@@ -216,6 +216,49 @@ public class WeightedGraph {
         return path;
     }
 
+    public WeightedGraph primsAlgorithm(String from) {
+        Node fromNode = nodes.get(from);
+        if (fromNode == null) {
+            throw new IllegalArgumentException();
+        }
+
+        WeightedGraph tree = new WeightedGraph();
+
+        if (nodes.isEmpty()) {
+            return tree;
+        }
+
+        for (Node node : nodes.values()) {
+            tree.addNode(node.label);
+        }
+        Set<Node> visited = new HashSet<>();
+
+
+        primsAlgorithm(fromNode, tree, visited);
+
+        return tree;
+    }
+
+    private void primsAlgorithm(Node node, WeightedGraph tree, Set<Node> visited) {
+        visited.add(node);
+        tree.addNode(node.label);
+
+
+        PriorityQueue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
+        for (Edge edge : node.getEdges()) {
+            if (!visited.contains(edge.to)) {
+                queue.add(edge);
+            }
+        }
+
+        if (!queue.isEmpty()) {
+            Edge edge = queue.remove();
+            tree.addEdge(node.label, edge.to.label, edge.weight);
+            primsAlgorithm(edge.to, tree, visited);
+        }
+
+    }
+
     public void print() {
         for (Node node : nodes.values()) {
             System.out.println(node + " -> " + node.getEdges());
