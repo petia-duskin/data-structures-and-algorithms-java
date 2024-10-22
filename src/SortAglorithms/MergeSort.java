@@ -5,12 +5,12 @@ import java.util.Arrays;
 public class MergeSort {
     public static void main(String[] args) {
         int[] arr = {2, 8, 4, 1, 3};
-        mergeSort(arr);
-        System.out.println(Arrays.toString(arr));
+        int[] sortedArr = mergeSort(arr);
+        System.out.println(Arrays.toString(sortedArr));
     }
 
-    public static void mergeSort(int[] arr) {
-        System.out.println(Arrays.toString(split(arr)));
+    public static int[] mergeSort(int[] arr) {
+        return split(arr);
     }
 
     public static int[] split(int[] arr) {
@@ -24,32 +24,30 @@ public class MergeSort {
         return merge(left, right);
     }
 
-    public static int[] merge(int[] arr1, int[] arr2) {
+    public static int[] merge(int[] left, int[] right) {
         int leftIndex = 0;
         int rightIndex = 0;
         int index = 0;
 
-        int[] result = new int[arr1.length + arr2.length];
+        int[] result = new int[left.length + right.length];
 
-        while (leftIndex < arr1.length && rightIndex < arr2.length) {
-            if (arr1[leftIndex] < arr2[rightIndex]) {
-                result[index] = arr1[leftIndex];
+        while (leftIndex < left.length && rightIndex < right.length) {
+            if (left[leftIndex] < right[rightIndex]) {
+                result[index] = left[leftIndex];
                 leftIndex++;
             } else {
-                result[index] = arr2[rightIndex];
+                result[index] = right[rightIndex];
                 rightIndex++;
             }
             index++;
         }
 
-        if (rightIndex < arr2.length) {
-            for (int i = rightIndex; i < arr2.length; i++) {
-                result[index++] = arr2[i];
-            }
-        } else if (leftIndex < arr1.length) {
-            for (int i = leftIndex; i < arr1.length; i++) {
-                result[index++] = arr1[i];
-            }
+        while (leftIndex < left.length) {
+            result[index++] = left[leftIndex++];
+        }
+
+        while (rightIndex < right.length) {
+            result[index++] = right[rightIndex++];
         }
 
         return result;
