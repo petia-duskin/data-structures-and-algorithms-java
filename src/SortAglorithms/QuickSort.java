@@ -37,39 +37,6 @@ public class QuickSort {
         return boundary;
     }
 
-
-    public static void quickSort(int[] arr) {
-        int pivotIndex = arr.length - 1;
-
-        partitioning(arr, pivotIndex);
-    }
-
-    public static void partitioning(int[] arr, int pivot) {
-        if (pivot < 1 || pivot > arr.length) {
-            return;
-        }
-
-        int i = 0;
-        int b = -1;
-        int pivotIndex = pivot;
-
-        while (i < pivotIndex) {
-            if (arr[i] < arr[pivotIndex]) {
-                swap(++b, i, arr);
-            }
-            i++;
-        }
-
-        if (arr[pivotIndex] < arr[pivotIndex - 1]) {
-            swap(pivotIndex, pivotIndex - 1, arr);
-            pivotIndex--;
-        }
-
-        swap(b + 1, pivotIndex, arr);
-
-        partitioning(arr, b);
-    }
-
     public static void swap(int index1, int index2, int[] arr) {
         int temp = arr[index1];
         arr[index1] = arr[index2];
