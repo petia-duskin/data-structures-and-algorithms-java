@@ -1,4 +1,4 @@
-package SortAglorithms;
+package sortAglorithms;
 
 import java.util.Arrays;
 
