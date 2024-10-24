@@ -63,4 +63,35 @@ public class Search {
 
         return ternarySearch(arr, value, mid1 + 1, mid2 - 1);
     }
+
+    public int jumpSearch(int[] arr, int value) {
+        int jumpSize = (int) Math.sqrt(arr.length);
+        int startIndex = 0;
+        int nextIndex = jumpSize;
+
+        while (startIndex < arr.length && arr[nextIndex - 1] < value) {
+            startIndex = nextIndex;
+            nextIndex += jumpSize;
+            if (nextIndex > arr.length) {
+                nextIndex = arr.length;
+            }
+        }
+
+        for (int i = startIndex; i < nextIndex; i++) {
+            if (arr[i] == value) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int exponentialSearch(int[] arr, int value) {
+        int bound = 1;
+        while (bound < arr.length && arr[bound] < value) {
+            bound *= 2;
+        }
+
+        return binarySearch(arr, bound / 2, Math.min(arr.length - 1, bound), value);
+    }
 }
