@@ -1,22 +1,16 @@
 import graphDataStructures.WeightedGraph;
+import linearDataStructures.DoublyLInkedList;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        WeightedGraph graph = new WeightedGraph();
-        graph.addNode("A");
-        graph.addNode("B");
-        graph.addNode("C");
-        graph.addNode("D");
-
-        graph.addEdge("A", "B", 3);
-        graph.addEdge("B", "D", 4);
-        graph.addEdge("C", "D", 4);
-        graph.addEdge("A", "C", 1);
-        graph.addEdge("B", "C", 2);
-
-        graph.primsAlgorithm("A").print();
+        DoublyLInkedList doublyLInkedList = new DoublyLInkedList();
+        doublyLInkedList.addFirst(10);
+        doublyLInkedList.addFirst(20);
+        doublyLInkedList.addFirst(30);
+        System.out.println(doublyLInkedList.removeLast());
+        System.out.println("");
     }
 
     public static String reverseString(String str) {
