@@ -2,7 +2,6 @@ package generalAlgorithms;
 
 import java.util.*;
 
-
 // ShuntingYard first, it transforms expression into reverse polish notation,
 // for example 3 + 4 -> 34+
 // then with the help of stack calculates the value
@@ -30,7 +29,7 @@ public class ShuntingYard {
         for (int i = 0; i < tokens.length; i++) {
             char token = tokens[i];
 
-            // Если текущий символ - число, может быть многозначным числом
+            // If current token is number, it can be multi number
             if (Character.isDigit(token)) {
                 StringBuilder number = new StringBuilder();
                 while (i < tokens.length && Character.isDigit(tokens[i])) {
@@ -45,20 +44,27 @@ public class ShuntingYard {
                 while (!operators.isEmpty() && operators.peek() != '(') {
                     output.push(String.valueOf(operators.pop()));
                 }
-                operators.pop(); // Удаляем '(' из стека
+                operators.pop(); // Remove '(' from operators
             } else if (isOperator(token)) {
-                while (!operators.isEmpty() && operatorsPriority.get(token) <= operatorsPriority.get(operators.peek())) {
+                // if current token has higher priority, we pop the operators and push inside output
+                // until current token will have higher priority
+                while (!operators.isEmpty() && hasHigherOrEqualPriority(token, operators.peek())) {
                     output.push(String.valueOf(operators.pop()));
                 }
                 operators.push(token);
             }
         }
 
+        // put all rest operators inside output
         while (!operators.isEmpty()) {
             output.push(String.valueOf(operators.pop()));
         }
 
         return output.toArray(new String[0]);
+    }
+
+    private boolean hasHigherOrEqualPriority(char current, char prev) {
+        return operatorsPriority.get(current) <= operatorsPriority.get(prev);
     }
 
     private boolean isOperator(char token) {
@@ -70,18 +76,18 @@ public class ShuntingYard {
 
         for (String token : tokens) {
             if (isOperator(token.charAt(0))) {
-                // Извлекаем два числа из стека
+                // pop two elements from stack
                 int b = stack.pop();
                 int a = stack.pop();
-                // Выполняем операцию и помещаем результат обратно в стек
+                // perform operation and return the value into the stack
                 stack.push(performOperation(token.charAt(0), a, b));
             } else {
-                // Если токен - число, то помещаем его в стек
+                // if token is number, put it into stack
                 stack.push(Integer.parseInt(token));
             }
         }
 
-        return stack.pop(); // Результат будет единственным элементом в стеке
+        return stack.pop();
     }
 
     private int performOperation(char operator, int a, int b) {
