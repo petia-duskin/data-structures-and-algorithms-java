@@ -2,7 +2,7 @@ package linearDataStructures;
 
 import java.util.Arrays;
 
-public class Stack {
+public class StackWithArray {
     private int[] values = new int[100];
     private int index = 0;
 
