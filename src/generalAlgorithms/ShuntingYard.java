@@ -2,6 +2,14 @@ package generalAlgorithms;
 
 import java.util.*;
 
+
+// ShuntingYard first, it transforms expression into reverse polish notation,
+// for example 3 + 4 -> 34+
+// then with the help of stack calculates the value
+// when we face two operands we pop them both and perform calculation with operator
+// Reverse polish notation is just transforms an expression into rpn 3 + 4 -> 34+
+// it doesn't calculate the value
+// There is also prefix form of polish notation 3 + 4 -> +34
 public class ShuntingYard {
     private final HashMap<Character, Integer> operatorsPriority = new HashMap<>();
 
