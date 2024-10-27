@@ -1,16 +1,15 @@
+import generalAlgorithms.ShuntingYard;
 import graphDataStructures.WeightedGraph;
 import linearDataStructures.DoublyLInkedList;
+import treeDataStructures.BinaryExpressionTree;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        DoublyLInkedList doublyLInkedList = new DoublyLInkedList();
-        doublyLInkedList.addFirst(10);
-        doublyLInkedList.addFirst(20);
-        doublyLInkedList.addFirst(30);
-        System.out.println(doublyLInkedList.removeLast());
-        System.out.println("");
+        ShuntingYard shuntingYard = new ShuntingYard();
+        String[] rpn = shuntingYard.infixToRPN("((3 / 3) * 2) + 5 - 7 * 2");
+        BinaryExpressionTree tree = new BinaryExpressionTree();
     }
 
     public static String reverseString(String str) {
