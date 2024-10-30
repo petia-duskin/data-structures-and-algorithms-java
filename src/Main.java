@@ -1,3 +1,4 @@
+
 import treeDataStructures.BinaryTree;
 
 import java.util.*;
@@ -5,17 +6,8 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        BinaryTree tree = new BinaryTree();
 
-        tree.insert(55);
-        tree.insert(10);
-        tree.insert(1);
-        tree.insert(19);
-        tree.insert(16);
-        tree.insert(23);
-        tree.insert(79);
 
-        tree.remove(19);
         System.out.println("Debug message");
     }
 
