@@ -14,9 +14,7 @@ public class BinaryTree {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "value=" + value +
-                    '}';
+            return "value: " + value;
         }
     }
 
@@ -195,6 +193,22 @@ public class BinaryTree {
         }
 
         return minValue(node.leftChild);
+    }
+
+    public int maxValue() {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        return maxValue(root).value;
+    }
+
+    private Node maxValue(Node node) {
+        if (node.rightChild == null) {
+            return node;
+        }
+
+        return maxValue(node.rightChild);
     }
 
     public boolean equals(Node root2) {

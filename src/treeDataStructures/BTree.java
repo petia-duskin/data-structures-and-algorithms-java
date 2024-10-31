@@ -11,13 +11,13 @@ class BTree {
 
     // Класс, представляющий узел B-дерева
     private class Node {
-        int valuesCount; // Количество ключей в узле
-        int[] values = new int[MAX_NODE_SIZE];
-        Node[] children = new Node[MAX_CHILDREN_SIZE];
-        boolean isLeaf = true;
+        private int valuesCount; // Количество ключей в узле
+        private int[] values = new int[MAX_NODE_SIZE];
+        private Node[] children = new Node[MAX_CHILDREN_SIZE];
+        private boolean isLeaf = true;
 
         // Вставка ключа в несмонтированный узел
-        void insertNonFull(int value) {
+        private void insertNonFull(int value) {
             if (isLeaf) {
                 values[shiftValuesToInsert(value)] = value;
                 valuesCount++;
@@ -73,7 +73,7 @@ class BTree {
         }
 
         // Разбиение полных узлов
-        void splitChild(int childIndex, Node leftChild) {
+        private void splitChild(int childIndex, Node leftChild) {
             Node rightChild = new Node();
             rightChild.isLeaf = leftChild.isLeaf;
             rightChild.valuesCount = MIN_NODE_SIZE;

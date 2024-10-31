@@ -6,9 +6,10 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        BinaryTree bt = new BinaryTree();
+        bt.insert(10);
 
-
-        System.out.println("Debug message");
+        System.out.println(bt.maxValue());
     }
 
     public static String reverseString(String str) {
