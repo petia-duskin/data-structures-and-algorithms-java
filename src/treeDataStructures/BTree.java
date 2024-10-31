@@ -154,6 +154,45 @@ class BTree {
         return newRoot;
     }
 
+    public boolean search(int value) {
+        Node current = root;
+        while (current != null) {
+            for (int i = 0; i < current.valuesCount; i++) {
+                if (current.values[i] == value) {
+                    return true;
+                }
+            }
+
+            for (int i = 0; i < current.valuesCount; i++) {
+                if (value > current.getValue(i)) {
+                    current = current.getChild(i + 1);
+                    break;
+                } else if (value < current.getValue(i)) {
+                    current = current.children[i];
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean search(Node node, int value) {
+        int index = 0;
+
+        while (index < node.valuesCount && value > node.getValue(index)) {
+            index++;
+        }
+
+        if (node.getValue(index) == value) {
+            return true;
+        } else if (node.isLeaf) {
+            return false;
+        }
+
+        return search(node.getChild(index), value);
+    }
+
     public void print() {
         print(root, "");
     }
@@ -187,6 +226,6 @@ class BTree {
         tree.insert(6);
         tree.insert(7);
 
-        tree.print();
+        System.out.println(tree.search(10));
     }
 }
