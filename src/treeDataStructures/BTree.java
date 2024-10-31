@@ -1,90 +1,157 @@
 package treeDataStructures;
 
+
+// Preemptive node split
 class BTree {
     private static final int T = 2; // Минимальная степень дерева (макс. 2*T - 1 элементов в узле)
-    private Node root;
+    private final int MAX_NODE_SIZE = 2 * T - 1;
+    private final int MAX_CHILDREN_SIZE = 2 * T;
+    private final int MIN_NODE_SIZE = T - 1;
+    private Node root = new Node();
 
     // Класс, представляющий узел B-дерева
-    private static class Node {
-        int n; // Количество ключей в узле
-        int[] keys = new int[2 * T - 1];
-        Node[] children = new Node[2 * T];
+    private class Node {
+        int valuesCount; // Количество ключей в узле
+        int[] values = new int[MAX_NODE_SIZE];
+        Node[] children = new Node[MAX_CHILDREN_SIZE];
         boolean isLeaf = true;
 
         // Вставка ключа в несмонтированный узел
-        void insertNonFull(int key) {
-            int i = n - 1;
-
+        void insertNonFull(int value) {
             if (isLeaf) {
-                while (i >= 0 && keys[i] > key) {
-                    keys[i + 1] = keys[i];
-                    i--;
-                }
-                keys[i + 1] = key;
-                n++;
+                values[shiftValuesToInsert(value)] = value;
+                valuesCount++;
             } else {
-                while (i >= 0 && keys[i] > key) {
-                    i--;
-                }
-                i++;
+                int insertionIndex = getChildIndexToInsert(value);
 
-                if (children[i].n == 2 * T - 1) {
-                    splitChild(i, children[i]);
-                    if (keys[i] < key) {
-                        i++;
+                if (hasMaxSize(getChild(insertionIndex))) {
+                    splitChild(insertionIndex, children[insertionIndex]);
+                    if (isGreater(value, getValue(insertionIndex))) {
+                        insertionIndex++;
                     }
                 }
-                children[i].insertNonFull(key);
+                getChild(insertionIndex).insertNonFull(value);
             }
+        }
+
+        private int getValue(int index) {
+            return values[index];
+        }
+
+        private Node getChild(int index) {
+            return children[index];
+        }
+
+        private void setChild(int index, Node child) {
+            children[index] = child;
+        }
+
+        private void setIfLeaf(boolean flag) {
+            isLeaf = flag;
+        }
+
+        // сдвигаем элементы вправо, пока не найдется место для вставки нового значения
+        private int shiftValuesToInsert(int key) {
+            int i = valuesCount - 1;
+
+            while (i >= 0 && values[i] > key) {
+                values[i + 1] = values[i];
+                i--;
+            }
+
+            return i + 1;
+        }
+
+        // ищем индекс внутреннего узла, куда вставим элемент
+        private int getChildIndexToInsert(int key) {
+            int i = valuesCount - 1;
+            while (i >= 0 && values[i] > key) {
+                i--;
+            }
+
+            return i + 1;
         }
 
         // Разбиение полных узлов
-        void splitChild(int i, Node y) {
-            Node z = new Node();
-            z.isLeaf = y.isLeaf;
-            z.n = T - 1;
+        void splitChild(int childIndex, Node leftChild) {
+            Node rightChild = new Node();
+            rightChild.isLeaf = leftChild.isLeaf;
+            rightChild.valuesCount = MIN_NODE_SIZE;
 
-            for (int j = 0; j < T - 1; j++) {
-                z.keys[j] = y.keys[j + T];
+            fillRightChild(rightChild, leftChild);
+
+            if (!leftChild.isLeaf) {
+                updateRightChildLinks(rightChild, leftChild);
             }
 
-            if (!y.isLeaf) {
-                for (int j = 0; j < T; j++) {
-                    z.children[j] = y.children[j + T];
-                }
+            // мы обрезаем правую часть
+            leftChild.valuesCount = MIN_NODE_SIZE;
+
+            shiftChildrenToRight(childIndex);
+            setRightChild(childIndex, rightChild);
+
+            shiftParentValues(childIndex);
+
+            values[childIndex] = leftChild.values[MIN_NODE_SIZE];
+            valuesCount++;
+        }
+
+        private void shiftParentValues(int childIndex) {
+            for (int j = valuesCount - 1; j >= childIndex; j--) {
+                values[j + 1] = values[j];
             }
+        }
 
-            y.n = T - 1;
+        private void setRightChild(int childIndex, Node rightChild) {
+            children[childIndex + 1] = rightChild;
+        }
 
-            for (int j = n; j >= i + 1; j--) {
+        private void shiftChildrenToRight(int childIndex) {
+            for (int j = valuesCount; j >= childIndex + 1; j--) {
                 children[j + 1] = children[j];
             }
-            children[i + 1] = z;
+        }
 
-            for (int j = n - 1; j >= i; j--) {
-                keys[j + 1] = keys[j];
+        private void fillRightChild(Node rightChild, Node node) {
+            for (int j = 0; j < MIN_NODE_SIZE; j++) {
+                rightChild.values[j] = node.values[j + T];
             }
-            keys[i] = y.keys[T - 1];
-            n++;
+        }
+
+        private void updateRightChildLinks(Node rightChild, Node node) {
+            for (int j = 0; j < T; j++) {
+                rightChild.children[j] = node.children[j + T];
+            }
         }
     }
 
-    public BTree() {
-        root = new Node();
+    private boolean hasMaxSize(Node node) {
+        return node.valuesCount == MAX_NODE_SIZE;
     }
 
-    public void insert(int key) {
-        Node r = root;
-        if (r.n == 2 * T - 1) {
-            Node s = new Node();
-            root = s;
-            s.isLeaf = false;
-            s.children[0] = r;
-            s.splitChild(0, r);
-            s.insertNonFull(key);
+    private boolean isGreater(int value1, int value2) {
+        return value1 > value2;
+    }
+
+    public void insert(int value) {
+        if (hasMaxSize(root)) {
+            Node newRoot = balance();
+            newRoot.insertNonFull(value);
         } else {
-            r.insertNonFull(key);
+            root.insertNonFull(value);
         }
+    }
+
+    private Node balance() {
+        Node prevRoot = root;
+
+        Node newRoot = new Node();
+        root = newRoot;
+        newRoot.setIfLeaf(false);
+        newRoot.setChild(0, prevRoot);
+        newRoot.splitChild(0, prevRoot);
+
+        return newRoot;
     }
 
     public void print() {
@@ -93,13 +160,13 @@ class BTree {
 
     private void print(Node node, String indent) {
         System.out.print(indent);
-        for (int i = 0; i < node.n; i++) {
-            System.out.print(node.keys[i] + " ");
+        for (int i = 0; i < node.valuesCount; i++) {
+            System.out.print(node.values[i] + " ");
         }
         System.out.println();
 
         if (!node.isLeaf) {
-            for (int i = 0; i <= node.n; i++) {
+            for (int i = 0; i <= node.valuesCount; i++) {
                 print(node.children[i], indent + "    ");
             }
         }
@@ -107,11 +174,18 @@ class BTree {
 
     public static void main(String[] args) {
         BTree tree = new BTree();
-        int[] values = {10, 20, 30, 40};
 
-        for (int value : values) {
-            tree.insert(value);
-        }
+        tree.insert(10);
+        tree.insert(20);
+        tree.insert(30);
+        tree.insert(40); // root split
+        tree.insert(15);
+        tree.insert(41);
+        tree.insert(1);
+        tree.insert(35);
+        tree.insert(5);
+        tree.insert(6);
+        tree.insert(7);
 
         tree.print();
     }
