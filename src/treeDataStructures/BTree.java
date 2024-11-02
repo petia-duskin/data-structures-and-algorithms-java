@@ -126,30 +126,21 @@ class BTree {
             }
         }
 
-        private boolean hasLeftChild(int index) {
-            return index > 0 && getChild(index - 1) != null;
-        }
-
-        private boolean hasRightChild(int index) {
-            return index < children.length && getChild(index + 1) != null;
+        private Node getRightChild(int index) {
+            return getChild(index + 1);
         }
 
         private Node getLeftChild(int index) {
             return getChild(index - 1);
         }
 
-        private Node getRightChild(int index) {
-            return getChild(index + 1);
-        }
+        private int findValue(int value) {
+            int index = 0;
+            while (index < valuesCount && values[index] < value) {
+                index++;
+            }
 
-        private int getPredecessor(int childIndex) {
-            Node predecessor = getChild(childIndex - 1);
-            return predecessor.getValue(predecessor.valuesCount - 1);
-        }
-
-        private int getSuccessor(int childIndex) {
-            Node successor = getChild(childIndex + 1);
-            return successor.getValue(0);
+            return index;
         }
 
         @Override
@@ -207,150 +198,175 @@ class BTree {
         return search(node.getChild(index), value);
     }
 
+    private void remove(int value) {
+        remove(root, value);
+        if (root.valuesCount == 0) {
+            root = root.isLeaf ? null : root.getChild(0);
+        }
+    }
+
+    private void remove(Node node, int value) {
+        int index = node.findValue(value);
+
+        if (index < node.valuesCount && node.getValue(index) == value) {
+            if (node.isLeaf) {
+                removeFromLeaf(node, index);
+            } else {
+                removeFromNonLeaf(node, index);
+            }
+        } else if (!node.isLeaf) {
+            boolean lastChild = index == node.valuesCount;
+
+            if (node.getChild(index).valuesCount < T) {
+                fill(node, index);
+            }
+
+            if (lastChild && index > node.valuesCount) {
+                remove(node.getLeftChild(index), value);
+            } else {
+                remove(node.getChild(index), value);
+            }
+        }
+    }
+
+    private void removeFromLeaf(Node node, int index) {
+        for (int i = index + 1; i < node.valuesCount; i++) {
+            node.values[i - 1] = node.values[i];
+        }
+
+        node.valuesCount--;
+    }
+
+    private void removeFromNonLeaf(Node node, int index) {
+        int value = node.getValue(index);
+
+        if (node.getChild(index).valuesCount >= T) {
+            int pred = getPredecessor(node, index);
+            node.values[index] = pred;
+            remove(node.getChild(index), pred);
+        } else if (node.getRightChild(index).valuesCount >= T) {
+            int succ = getSuccessor(node, index);
+            node.values[index] = succ;
+            remove(node.getRightChild(index), succ);
+        } else {
+            merge(node, index);
+            remove(node.getChild(index), value);
+        }
+    }
+
+    private int getPredecessor(Node node, int index) {
+        Node current = node.getChild(index);
+        while (!current.isLeaf) {
+            current = current.getChild(current.valuesCount);
+        }
+
+        return current.getValue(current.valuesCount - 1);
+    }
+
+    private int getSuccessor(Node node, int index) {
+        Node current = node.getRightChild(index);
+        while (!current.isLeaf) {
+            current = current.getChild(0);
+        }
+
+        return current.getValue(0);
+    }
+
+    private void fill(Node node, int index) {
+        if (index != 0 && node.children[index - 1].valuesCount >= T) {
+            borrowFromPrev(node, index);
+        } else if (index != node.valuesCount && node.children[index + 1].valuesCount >= T) {
+            borrowFromNext(node, index);
+        } else {
+            if (index != node.valuesCount) {
+                merge(node, index);
+            } else {
+                merge(node, index - 1);
+            }
+        }
+    }
+
+    private void borrowFromPrev(Node node, int index) {
+        Node child = node.children[index];
+        Node leftSibling = node.getLeftChild(index);
+
+        for (int i = child.valuesCount - 1; i >= 0; i--) {
+            child.values[i + 1] = child.values[i];
+        }
+
+        if (!child.isLeaf) {
+            for (int i = child.valuesCount; i >= 0; i--) {
+                child.children[i + 1] = child.children[i];
+            }
+        }
+
+        child.values[0] = node.values[index - 1];
+
+        if (!child.isLeaf) {
+            child.children[0] = leftSibling.children[leftSibling.valuesCount];
+        }
+
+        node.values[index - 1] = leftSibling.values[leftSibling.valuesCount - 1];
+        child.valuesCount++;
+        leftSibling.valuesCount--;
+    }
+
+    private void borrowFromNext(Node node, int index) {
+        Node child = node.children[index];
+        Node rightSibling = node.getRightChild(index);
+
+        child.values[child.valuesCount] = node.values[index];
+        if (!child.isLeaf) {
+            child.children[child.valuesCount + 1] = rightSibling.children[0];
+        }
+
+        node.values[index] = rightSibling.values[0];
+        for (int i = 1; i < rightSibling.valuesCount; i++) {
+            rightSibling.values[i - 1] = rightSibling.values[i];
+        }
+
+        if (!rightSibling.isLeaf) {
+            for (int i = 1; i <= rightSibling.valuesCount; i++) {
+                rightSibling.children[i - 1] = rightSibling.children[i];
+            }
+        }
+
+        child.valuesCount++;
+        rightSibling.valuesCount--;
+    }
+
+    private void merge(Node node, int index) {
+        Node child = node.getChild(index);
+        Node rightSibling = node.getRightChild(index);
+
+        child.values[T - 1] = node.getValue(index);
+
+        for (int i = 0; i < rightSibling.valuesCount; i++) {
+            child.values[i + T] = rightSibling.values[i];
+        }
+
+        if (!child.isLeaf) {
+            for (int i = 0; i <= rightSibling.valuesCount; i++) {
+                child.children[i + T] = rightSibling.children[i];
+            }
+        }
+
+        for (int i = index + 1; i < node.valuesCount; i++) {
+            node.values[i - 1] = node.values[i];
+        }
+
+        for (int i = index + 2; i <= node.valuesCount; i++) {
+            node.children[i - 1] = node.children[i];
+        }
+
+        child.valuesCount += rightSibling.valuesCount + 1;
+        node.valuesCount--;
+    }
+
     public void print() {
         print(root, "");
     }
 
-    // Сперва нам надо найти parent узла, который мы будем удалять
-    public void remove(int value) {
-        Node parentNode = getParent(value);
-        if (parentNode == null) {
-            throw new IllegalArgumentException();
-        }
-
-        int childIndex = searchChildIndex(parentNode, value);
-        Node removeNode = parentNode.getChild(childIndex);
-
-        removeValue(removeNode, value);
-
-        System.out.println("parent " + parentNode);
-
-        if (isValidSize(removeNode)) {
-            System.out.println(removeNode + " size is valid");
-        } else {
-            System.out.println(removeNode + " size is not valid");
-            if (parentNode.hasLeftChild(childIndex)) {
-                System.out.println(removeNode + " has left child");
-                if (mayBorrow(parentNode.getLeftChild(childIndex))) {
-                    int predecessor = parentNode.getPredecessor(childIndex);
-                    Node predecessorNode = parentNode.getLeftChild(childIndex);
-                    System.out.println("We can borrow " + parentNode.getPredecessor(childIndex));
-                    removeNode.values[0] = parentNode.values[0];
-                    parentNode.values[0] = predecessor;
-                    removeNode.valuesCount = removeNode.valuesCount + 1;
-                    predecessorNode.valuesCount = predecessorNode.valuesCount - 1;
-                } else {
-                    System.out.println("We can't borrow " + parentNode.getPredecessor(childIndex));
-                }
-            } else if (parentNode.hasRightChild(childIndex)) {
-                System.out.println(removeNode + " has right child");
-                if (mayBorrow(parentNode.getRightChild(childIndex))) {
-                    int successor = parentNode.getSuccessor(childIndex);
-                    Node successorNode = parentNode.getRightChild(childIndex);
-                    System.out.println("We can borrow " + parentNode.getSuccessor(childIndex));
-                    int parentValue = parentNode.values[parentNode.valuesCount - 1];
-                    removeNode.values[0] = parentValue;
-                    parentNode.values[parentNode.valuesCount - 1] = successor;
-                    removeNode.valuesCount = removeNode.valuesCount + 1;
-                    shiftItemsToRemove(0, successorNode.valuesCount, successorNode.values);
-                    successorNode.valuesCount = successorNode.valuesCount - 1;
-                } else {
-                    System.out.println("We can't borrow " + parentNode.getSuccessor(childIndex));
-                }
-            } else {
-                // merge the node with either the left sibling node or the right sibling node
-                System.out.println("We can't borrow from left and right");
-                if (parentNode.hasLeftChild(childIndex)) {
-                    Node predecessorNode = parentNode.getLeftChild(childIndex - 1);
-                    int[] leftValues = Arrays.copyOfRange(predecessorNode.values, 0, predecessorNode.valuesCount);
-                    shiftItemsToRemove(0, leftValues.length, removeNode.values);
-                    for (int i = 0; i < leftValues.length; i++) {
-                        removeNode.values[i] = leftValues[i];
-                    }
-
-                    parentNode.getChild(childIndex - 1).valuesCount = 0;
-                    removeNode.valuesCount = removeNode.valuesCount + leftValues.length;
-                } else if (parentNode.hasRightChild(childIndex)) {
-                    Node successorNode = parentNode.getRightChild(childIndex + 1);
-                    int[] rightValues = Arrays.copyOfRange(successorNode.values, 0, successorNode.valuesCount);
-                    int index = removeNode.valuesCount;
-                    int successorIndex = 0;
-                    while (successorIndex < rightValues.length) {
-                        removeNode.values[index++] = rightValues[successorIndex++];
-                    }
-
-                    parentNode.getRightChild(childIndex - 1).valuesCount = 0;
-                    removeNode.valuesCount = removeNode.valuesCount + rightValues.length;
-                }
-            }
-        }
-
-
-    }
-
-    private void removeValue(Node removeNode, int value) {
-        for (int i = 0; i < removeNode.valuesCount; i++) {
-            if (removeNode.getValue(i) == value) {
-                shiftItemsToRemove(i, removeNode.valuesCount - 1, removeNode.values);
-                removeNode.valuesCount = removeNode.valuesCount - 1;
-                return;
-            }
-        }
-    }
-
-    private boolean isValidSize(Node node) {
-        return node.valuesCount >= MIN_NODE_SIZE;
-    }
-
-    private boolean mayBorrow(Node node) {
-        return node.valuesCount > MIN_NODE_SIZE;
-    }
-
-    private void shiftItemsToRemove(int from, int to, int[] arr) {
-        for (int i = from; i < to; i++) {
-            arr[i] = arr[i + 1];
-        }
-    }
-
-    private Node getParent(int value) {
-        return getParent(root, root, value);
-    }
-
-    private int searchChildIndex(Node node, int value) {
-        return searchChildIndex(node, 0, value);
-    }
-
-    private int searchChildIndex(Node node, int prevIndex, int value) {
-        int currentIndex = 0;
-
-        while (currentIndex < node.valuesCount && value > node.getValue(currentIndex)) {
-            currentIndex++;
-        }
-
-        if (node.getValue(currentIndex) == value) {
-            return prevIndex;
-        } else if (node.isLeaf) {
-            return -1;
-        }
-
-        return searchChildIndex(node.getChild(currentIndex), currentIndex, value);
-    }
-
-    private Node getParent(Node node, Node prev, int value) {
-        int index = 0;
-
-        while (index < node.valuesCount && value > node.getValue(index)) {
-            index++;
-        }
-
-        if (node.getValue(index) == value) {
-            return prev;
-        } else if (node.isLeaf) {
-            return null;
-        }
-
-        return getParent(node.getChild(index), node, value);
-    }
 
     private void print(Node node, String indent) {
         System.out.print(indent);
@@ -369,23 +385,14 @@ class BTree {
     public static void main(String[] args) {
         BTree tree = new BTree();
 
-        tree.insert(20);
-        tree.insert(40);
-        tree.insert(10);
-        tree.insert(28);
-        tree.insert(33);
-        tree.insert(50);
-        tree.insert(60);
-        tree.insert(5);
-        tree.insert(15);
-        tree.insert(25);
-        tree.insert(30);
-        tree.insert(35);
-        tree.insert(45);
-        tree.insert(55);
-        tree.insert(65);
+        for (int i = 1; i <= 17; i++) {
+            tree.insert(i);
+        }
 
-        tree.remove(30);
+        tree.remove(15);
+        tree.remove(13);
+        tree.remove(4);
+
         System.out.println("Debug message");
     }
 }
