@@ -83,11 +83,12 @@ public class AVLTree {
     }
 
     public void remove(int value) {
-        remove(root, value);
+        root = remove(root, value);
     }
 
     private Node remove(Node node, int value) {
         if (node == null) return node;
+
 
         if (value < node.value)
             node.leftChild = remove(node.leftChild, value);
@@ -105,9 +106,9 @@ public class AVLTree {
             node.leftChild = remove(node.leftChild, node.value);
         }
 
-
         setHeight(node);
-        return node;
+
+        return balance(node);
     }
 
 

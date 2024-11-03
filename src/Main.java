@@ -11,12 +11,11 @@ public class Main {
         avlTree.insert(10);
         avlTree.insert(20);
         avlTree.insert(30);
-        avlTree.insert(21);
         avlTree.insert(40);
         avlTree.insert(50);
 
         avlTree.remove(30);
-        avlTree.remove(10);
+        avlTree.remove(35);
         avlTree.remove(50);
         System.out.println("Debug message");
     }
