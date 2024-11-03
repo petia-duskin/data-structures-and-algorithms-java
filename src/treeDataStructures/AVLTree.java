@@ -66,7 +66,6 @@ public class AVLTree {
         node.leftChild = newRoot.rightChild;
         newRoot.rightChild = node;
 
-        setHeight(newRoot);
         setHeight(node);
 
         return newRoot;
@@ -78,7 +77,6 @@ public class AVLTree {
         node.rightChild = newRoot.leftChild;
         newRoot.leftChild = node;
 
-        setHeight(newRoot);
         setHeight(node);
 
         return newRoot;

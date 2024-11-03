@@ -273,7 +273,7 @@ class BTree {
     }
 
     private void fill(Node node, int index) {
-        if (index != 0 && node.children[index - 1].valuesCount >= T) {
+        if (index != 0 && node.getLeftChild(index).valuesCount >= T) {
             borrowFromPrev(node, index);
         } else if (index != node.valuesCount && node.children[index + 1].valuesCount >= T) {
             borrowFromNext(node, index);
@@ -390,8 +390,6 @@ class BTree {
         }
 
         tree.remove(15);
-        tree.remove(13);
-        tree.remove(4);
 
         System.out.println("Debug message");
     }

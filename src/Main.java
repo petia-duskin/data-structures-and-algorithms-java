@@ -1,4 +1,5 @@
 
+import treeDataStructures.AVLTree;
 import treeDataStructures.BinaryTree;
 
 import java.util.*;
@@ -6,10 +7,14 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        BinaryTree bt = new BinaryTree();
-        bt.insert(10);
-
-        System.out.println(bt.maxValue());
+        AVLTree avlTree = new AVLTree();
+        avlTree.insert(10);
+        avlTree.insert(20);
+        avlTree.insert(30);
+        avlTree.insert(21);
+        avlTree.insert(40);
+        avlTree.insert(50);
+        System.out.println("Debug message");
     }
 
     public static String reverseString(String str) {
