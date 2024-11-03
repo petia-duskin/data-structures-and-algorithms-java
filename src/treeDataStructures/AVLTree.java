@@ -94,6 +94,22 @@ public class AVLTree {
         return balanceFactor(node) < -1;
     }
 
+    // we can use in sorting data, avl sort time complexity: O(n * log n)
+    // space complexity: O(n)
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
+    }
+
+    private void inOrderTraversal(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        inOrderTraversal(node.leftChild);
+        System.out.print(node.value + " ");
+        inOrderTraversal(node.rightChild);
+    }
+
     private boolean isBalanced(Node node) {
         return Math.abs(height(node.leftChild) - height(node.rightChild)) <= 1;
     }

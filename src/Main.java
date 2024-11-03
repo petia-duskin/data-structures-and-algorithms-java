@@ -14,7 +14,8 @@ public class Main {
         avlTree.insert(21);
         avlTree.insert(40);
         avlTree.insert(50);
-        System.out.println("Debug message");
+
+        avlTree.inOrderTraversal();
     }
 
     public static String reverseString(String str) {
