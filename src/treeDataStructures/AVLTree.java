@@ -82,6 +82,44 @@ public class AVLTree {
         return newRoot;
     }
 
+    public void remove(int value) {
+        remove(root, value);
+    }
+
+    private Node remove(Node node, int value) {
+        if (node == null) return node;
+
+        if (value < node.value)
+            node.leftChild = remove(node.leftChild, value);
+        else if (value > node.value)
+            node.rightChild = remove(node.rightChild, value);
+
+        else {
+            if (node.leftChild == null)
+                return node.rightChild;
+            else if (node.rightChild == null)
+                return node.leftChild;
+
+            node.value = findPredecessor(node.leftChild);
+
+            node.leftChild = remove(node.leftChild, node.value);
+        }
+
+
+        setHeight(node);
+        return node;
+    }
+
+
+    private int findPredecessor(Node node) {
+        int maxv = node.value;
+        while (node.rightChild != null) {
+            maxv = node.rightChild.value;
+            node = node.rightChild;
+        }
+        return maxv;
+    }
+
     private void setHeight(Node node) {
         node.height = height(node);
     }
