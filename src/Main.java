@@ -1,22 +1,17 @@
 
 import treeDataStructures.AVLTree;
 import treeDataStructures.BinaryTree;
+import treeDataStructures.RedBlackTree;
 
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        AVLTree avlTree = new AVLTree();
-        avlTree.insert(10);
-        avlTree.insert(20);
-        avlTree.insert(30);
-        avlTree.insert(40);
-        avlTree.insert(50);
-
-        avlTree.remove(30);
-        avlTree.remove(35);
-        avlTree.remove(50);
+        RedBlackTree tree = new RedBlackTree();
+        tree.insert(10);
+        tree.insert(20);
+        tree.insert(30);
         System.out.println("Debug message");
     }
 
