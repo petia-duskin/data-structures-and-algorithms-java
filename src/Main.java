@@ -1,4 +1,3 @@
-import treeDataStructures.RedBlackTree;
 import treeDataStructures.SplayTree;
 
 import java.util.*;
@@ -10,9 +9,8 @@ public class Main {
         splayTree.insert(10);
         splayTree.insert(20);
         splayTree.insert(30);
-        splayTree.insert(5);
+        splayTree.insert(40);
         splayTree.insert(1);
-        splayTree.insert(7);
         System.out.println("Debug message");
     }
 

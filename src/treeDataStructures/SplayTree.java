@@ -1,144 +1,122 @@
 package treeDataStructures;
 
 public class SplayTree {
+    private class Node {
+        private Node left;
+        private Node right;
+        private Node parent;
+        private int value;
+
+        public Node(int value) {
+            this.value = value;
+        }
+
+        private Node getGrandParent() {
+            return parent != null ? parent.parent : null;
+        }
+
+        private boolean isLeftChild() {
+            return parent != null && parent.left == this;
+        }
+
+        private boolean isRightChild() {
+            return parent.right != null && parent.right == this;
+        }
+
+        @Override
+        public String toString() {
+            return "value: " + value;
+        }
+    }
+
     private Node root;
 
-    private class Node {
-        int key;
-        Node left, right;
-
-        Node(int key) {
-            this.key = key;
-        }
+    public void insert(int value) {
+        Node newNode = new Node(value);
+        root = insert(root, newNode);
+        splay(newNode);
     }
 
-    // Splay операция: поднимает узел с данным ключом на верх дерева
-    private Node splay(Node root, int key) {
-        if (root == null || root.key == key) return root;
-
-        // Ключ в левом поддереве
-        if (key < root.key) {
-            if (root.left == null) return root;
-
-            // Zig-Zig (левый-левый)
-            if (key < root.left.key) {
-                root.left.left = splay(root.left.left, key);
-                root = rightRotate(root);
-            }
-            // Zig-Zag (левый-правый)
-            else if (key > root.left.key) {
-                root.left.right = splay(root.left.right, key);
-                if (root.left.right != null)
-                    root.left = leftRotate(root.left);
-            }
-
-            return (root.left == null) ? root : rightRotate(root);
-        } else { // Ключ в правом поддереве
-            if (root.right == null) return root;
-
-            // Zag-Zig (правый-левый)
-            if (key < root.right.key) {
-                root.right.left = splay(root.right.left, key);
-                if (root.right.left != null)
-                    root.right = rightRotate(root.right);
-            }
-            // Zag-Zag (правый-правый)
-            else if (key > root.right.key) {
-                root.right.right = splay(root.right.right, key);
-                root = leftRotate(root);
-            }
-
-            return (root.right == null) ? root : leftRotate(root);
-        }
-    }
-
-    // Правый поворот
-    private Node rightRotate(Node x) {
-        Node y = x.left;
-        x.left = y.right;
-        y.right = x;
-        return y;
-    }
-
-    // Левый поворот
-    private Node leftRotate(Node x) {
-        Node y = x.right;
-        x.right = y.left;
-        y.left = x;
-        return y;
-    }
-
-    // Метод для вставки ключа
-    public void insert(int key) {
-        if (root == null) {
-            root = new Node(key);
-            return;
+    private Node insert(Node currentNode, Node newNode) {
+        if (currentNode == null) {
+            return newNode;
         }
 
-        root = splay(root, key);
-
-        if (root.key == key) return; // Ключ уже существует
-
-        Node newNode = new Node(key);
-
-        if (key < root.key) {
-            newNode.right = root;
-            newNode.left = root.left;
-            root.left = null;
+        if (currentNode.value > newNode.value) {
+            currentNode.left = insert(currentNode.left, newNode);
+            currentNode.left.parent = currentNode;
         } else {
-            newNode.left = root;
-            newNode.right = root.right;
-            root.right = null;
+            currentNode.right = insert(currentNode.right, newNode);
+            currentNode.right.parent = currentNode;
         }
 
-        root = newNode;
+        return currentNode;
     }
 
-    // Метод для поиска ключа
-    public boolean find(int key) {
-        if (root == null) return false;
+    private void splay(Node currentNode) {
 
-        root = splay(root, key);
+        while (currentNode != root) {
+            Node parent = currentNode.parent;
+            Node grandParent = currentNode.getGrandParent();
 
-        return root.key == key;
-    }
-
-    // Метод для удаления ключа
-    public void remove(int key) {
-        if (root == null) return;
-
-        root = splay(root, key);
-
-        if (root.key != key) return; // Ключ не найден
-
-        if (root.left == null) {
-            root = root.right;
-        } else {
-            Node temp = root.right;
-            root = root.left;
-            root = splay(root, key);
-            root.right = temp;
-        }
-    }
-
-    // Дополнительный метод для печати дерева (для проверки)
-    public void printTree() {
-        printTree(root, "", true);
-    }
-
-    private void printTree(Node node, String indent, boolean last) {
-        if (node != null) {
-            System.out.print(indent);
-            if (last) {
-                System.out.print("R----");
-                indent += "   ";
+            if (grandParent == null) {
+                if (currentNode.isLeftChild()) {
+                    rightRotate(parent);
+                } else {
+                    leftRotate(parent);
+                }
+            } else if (currentNode.isLeftChild() && parent.isLeftChild()) {
+                rightRotate(grandParent);
+                rightRotate(parent);
+            } else if (currentNode.isRightChild() && parent.isRightChild()) {
+                leftRotate(grandParent);
+                leftRotate(parent);
+            } else if (currentNode.isLeftChild() && parent.isRightChild()) {
+                rightRotate(parent);
+                leftRotate(parent);
             } else {
-                System.out.print("L----");
-                indent += "|  ";
+                leftRotate(parent);
+                rightRotate(grandParent);
             }
-            System.out.println(node.key);
-            printTree(node.left, indent, false);
-            printTree(node.right, indent, true);
         }
     }
+
+    private void leftRotate(Node currentNode) {
+        Node newRoot = currentNode.right;
+        currentNode.right = newRoot.left;
+
+        if (currentNode.right != null) {
+            currentNode.right.parent = currentNode;
+        }
+
+        updateChildrenOfParent(currentNode, newRoot);
+        newRoot.left = currentNode;
+        newRoot.parent = currentNode.parent;
+        currentNode.parent = newRoot;
+    }
+
+    public void rightRotate(Node currentNode) {
+        Node newRoot = currentNode.left;
+        currentNode.left = newRoot.right;
+
+        if (currentNode.left != null) {
+            currentNode.left.parent = currentNode;
+        }
+        updateChildrenOfParent(currentNode, newRoot);
+        newRoot.parent = currentNode.parent;
+        newRoot.right = currentNode;
+        currentNode.parent = newRoot;
+    }
+
+    private void updateChildrenOfParent(Node node, Node parent) {
+        if (node.parent == null) {
+            root = parent;
+        } else if (node.isLeftChild()) {
+            node.parent.left = parent;
+        } else {
+            node.parent.right = parent;
+        }
+    }
+
+
 }
