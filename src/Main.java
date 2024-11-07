@@ -1,15 +1,19 @@
 import treeDataStructures.RedBlackTree;
+import treeDataStructures.SplayTree;
 
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        RedBlackTree tree = new RedBlackTree();
-        tree.insert(10);
-        tree.insert(20);
-        tree.insert(30);
-        System.out.println("debug message");
+        SplayTree splayTree = new SplayTree();
+        splayTree.insert(10);
+        splayTree.insert(20);
+        splayTree.insert(30);
+        splayTree.insert(5);
+        splayTree.insert(1);
+        splayTree.insert(7);
+        System.out.println("Debug message");
     }
 
     public static String reverseString(String str) {
