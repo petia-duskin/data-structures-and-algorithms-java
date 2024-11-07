@@ -1,6 +1,3 @@
-
-import treeDataStructures.AVLTree;
-import treeDataStructures.BinaryTree;
 import treeDataStructures.RedBlackTree;
 
 import java.util.*;
@@ -12,7 +9,7 @@ public class Main {
         tree.insert(10);
         tree.insert(20);
         tree.insert(30);
-        System.out.println("Debug message");
+        System.out.println("debug message");
     }
 
     public static String reverseString(String str) {
