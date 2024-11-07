@@ -11,6 +11,7 @@ public class Main {
         splayTree.insert(30);
         splayTree.insert(40);
         splayTree.insert(1);
+        splayTree.find(40);
         System.out.println("Debug message");
     }
 

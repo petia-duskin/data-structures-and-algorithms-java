@@ -31,6 +31,22 @@ public class SplayTree {
 
     private Node root;
 
+    public boolean find(int value) {
+        return find(root, value);
+    }
+
+    public boolean find(Node node, int value) {
+        if (node != null) {
+            if (node.value == value) {
+                splay(node);
+                return true;
+            }
+            Node nextNode = node.value > value ? node.left : node.right;
+            find(nextNode, value);
+        }
+        return false;
+    }
+
     public void insert(int value) {
         Node newNode = new Node(value);
         root = insert(root, newNode);
